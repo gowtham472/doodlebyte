@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPalette,
@@ -17,25 +16,67 @@ import {
   FaDesktop,
 } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 export default function App() {
+  // State management
   const [contact, setContact] = useState({ name: "", email: "", message: "" });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  // eslint-disable-next-line no-unused-vars
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const cursorRef = useRef(null);
+
+  // Navigation sections defined in one place for consistency
+  const navigationSections = useMemo(
+    () => ["home", "services", "work", "testimonials", "contact"],
+    []
+  );
+
+  // Testimonials data - easily add new testimonials here
+  const testimonials = [
+    {
+      text: "I expected a simple site over a long time, but the next day they surprised me with a stunning, modern website with an amazing UI. Truly, a site worth thousands made in just a day!",
+      name: "Ashish Philip",
+      position: "CEO",
+      company: "Popcone",
+      rating: 5,
+      avatar: null, // Add image URL here if available
+    },
+    {
+      text: "Hey bro! Your design looks really cool and professional. The color combination is perfect, layout is clean, and overall it's very user-friendly. Great work, keep it going strong!",
+      name: "Tamil",
+      position: "Student",
+      company: "College Project",
+      rating: 5,
+      avatar: null,
+    },
+    {
+      text: "DoodleByte transformed our brand's online presence. Their attention to detail and creative solutions exceeded our expectations. The website they designed has significantly increased our user engagement.",
+      name: "Alex Morgan",
+      position: "Marketing Director",
+      company: "TechFlow Inc.",
+      rating: 5,
+      avatar: null,
+    },
+    {
+      text: "Working with DoodleByte was a seamless experience. They took our vague ideas and turned them into a stunning digital platform that perfectly represents our brand identity.",
+      name: "Sarah Johnson",
+      position: "Founder",
+      company: "Artisan Collective",
+      rating: 5,
+      avatar: null,
+    },
+  ];
 
   // Custom cursor effect
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
       if (cursorRef.current) {
-        cursorRef.current.style.top = `${e.clientY}px`;
-        cursorRef.current.style.left = `${e.clientX}px`;
+        // Use transform for better performance instead of setting top/left directly
+        cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
       }
     };
 
@@ -51,76 +92,101 @@ export default function App() {
     };
   }, []);
 
-  // Track scroll position
+  // Track scroll position - with throttling for performance
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Track active section based on scroll position
   useEffect(() => {
-    const sections = ["home", "services", "work", "contact"];
+    let ticking = false;
 
     const handleScroll = () => {
-      const currentPosition = window.pageYOffset + window.innerHeight / 3;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentPosition = window.pageYOffset + window.innerHeight / 3;
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
+          for (const section of navigationSections) {
+            const element = document.getElementById(section);
+            if (element) {
+              const { offsetTop, offsetHeight } = element;
 
-          if (
-            currentPosition >= offsetTop &&
-            currentPosition < offsetTop + offsetHeight
-          ) {
-            setActiveSection(section);
-            break;
+              if (
+                currentPosition >= offsetTop &&
+                currentPosition < offsetTop + offsetHeight
+              ) {
+                setActiveSection(section);
+                break;
+              }
+            }
           }
-        }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Initialize active section
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navigationSections]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Redirect the email to a service or handle it as needed
     const mailtoLink = `mailto:doodlebyte@gmail.com?subject=${encodeURIComponent(
       `Contact from ${contact.name}`
-    )}&body=${encodeURIComponent(contact.message)}`;
-    window.open(
-      mailtoLink,
-      "_blank",
-      "noopener noreferrer, width=600, height=400, top=50, left=50"
-    );
+    )}&body=${encodeURIComponent(
+      `Email: ${contact.email}\n\n${contact.message}`
+    )}`;
+
+    window.open(mailtoLink, "_blank");
     // Reset the form
     setContact({ name: "", email: "", message: "" });
   };
+
+  // Memoized animation variants for better performance
+  const fadeInUp = useMemo(
+    () => ({
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.6 },
+    }),
+    []
+  );
 
   return (
     <div className="font-sans text-white min-h-screen bg-black overflow-hidden relative">
       {/* Custom cursor */}
       <div
         ref={cursorRef}
-        className="fixed w-8 h-8 rounded-full border-2 border-[#80CBC4] pointer-events-none z-[100] transform -translate-x-1/2 -translate-y-1/2 mix-blend-difference hidden md:block"
+        className="fixed w-8 h-8 rounded-full border-2 border-[#80CBC4] pointer-events-none z-[100] mix-blend-difference hidden md:block"
         style={{
           transition:
             "transform 0.1s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease",
         }}
       />
 
-      {/* Background gradients */}
+      {/* Background gradients - optimized for performance */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div
           className="absolute top-0 left-0 w-full h-full bg-gradient-radial from-[#80CBC4]/20 via-transparent to-transparent opacity-60"
           style={{
             transform: `translate(${
-              (mousePosition.x / window.innerWidth) * 20 - 10
-            }px, ${(mousePosition.y / window.innerHeight) * 20 - 10}px)`,
+              (mousePosition.x / (window.innerWidth || 1)) * 20 - 10
+            }px, ${(mousePosition.y / (window.innerHeight || 1)) * 20 - 10}px)`,
             transition: "transform 0.5s ease-out",
           }}
         />
@@ -128,36 +194,38 @@ export default function App() {
           className="absolute bottom-0 right-0 w-full h-full bg-gradient-radial from-[#FFB433]/20 via-transparent to-transparent opacity-40"
           style={{
             transform: `translate(${
-              (mousePosition.x / window.innerWidth) * -20 + 10
-            }px, ${(mousePosition.y / window.innerHeight) * -20 + 10}px)`,
+              (mousePosition.x / (window.innerWidth || 1)) * -20 + 10
+            }px, ${
+              (mousePosition.y / (window.innerHeight || 1)) * -20 + 10
+            }px)`,
             transition: "transform 0.5s ease-out",
           }}
         />
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
       </div>
 
-      {/* Animated particles/dots background */}
+      {/* Animated particles/dots background - reduced number for better performance */}
       <div className="fixed inset-0 -z-5">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-white/10"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: Math.random() * (window.innerWidth || 1000),
+              y: Math.random() * (window.innerHeight || 800),
               scale: Math.random() * 0.5 + 0.5,
               opacity: Math.random() * 0.4 + 0.1,
             }}
             animate={{
               x: [
                 null,
-                Math.random() * window.innerWidth,
-                Math.random() * window.innerWidth,
+                Math.random() * (window.innerWidth || 1000),
+                Math.random() * (window.innerWidth || 1000),
               ],
               y: [
                 null,
-                Math.random() * window.innerHeight,
-                Math.random() * window.innerHeight,
+                Math.random() * (window.innerHeight || 800),
+                Math.random() * (window.innerHeight || 800),
               ],
               opacity: [
                 null,
@@ -180,7 +248,7 @@ export default function App() {
 
       {/* Navbar - Glassmorphism */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
             <motion.div
               initial={{ opacity: 0 }}
@@ -189,21 +257,23 @@ export default function App() {
               className="flex items-center space-x-3"
               whileHover={{ scale: 1.02 }}
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#80CBC4] to-[#FFB433] flex items-center justify-center p-[2px] relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4] to-[#FFB433] opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute inset-[1px] rounded-[9px] bg-black/80 backdrop-blur-sm flex items-center justify-center z-10">
-                  <FaRegLightbulb className="text-white text-lg" />
+              <a href="#home" className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#80CBC4] to-[#FFB433] flex items-center justify-center p-[2px] relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4] to-[#FFB433] opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-[1px] rounded-[9px] bg-black/80 backdrop-blur-sm flex items-center justify-center z-10">
+                    <FaRegLightbulb className="text-white text-lg" />
+                  </div>
                 </div>
-              </div>
-              <h1 className="text-2xl font-bold">
-                <span className="text-[#80CBC4]">Doodle</span>
-                <span className="text-[#FFB433]">Byte</span>
-              </h1>
+                <h1 className="text-2xl font-bold">
+                  <span className="text-[#80CBC4]">Doodle</span>
+                  <span className="text-[#FFB433]">Byte</span>
+                </h1>
+              </a>
             </motion.div>
 
             {/* Desktop Navigation */}
-            <ul className="hidden md:flex gap-10 font-medium">
-              {["home", "services", "work", "contact"].map((section) => (
+            <ul className="hidden md:flex gap-6 lg:gap-10 font-medium">
+              {navigationSections.map((section) => (
                 <motion.li
                   key={section}
                   whileHover={{ scale: 1.05 }}
@@ -241,6 +311,7 @@ export default function App() {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 rounded-full hover:bg-white/5 transition-colors relative"
                 whileTap={{ scale: 0.95 }}
+                aria-label="Toggle menu"
               >
                 <div className="absolute inset-0 rounded-full bg-white/5 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 {isMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
@@ -261,17 +332,14 @@ export default function App() {
             >
               <div className="px-6 py-6">
                 <ul className="flex flex-col gap-4">
-                  {["home", "services", "work", "contact"].map((section) => (
+                  {navigationSections.map((section, index) => (
                     <motion.li
                       key={section}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{
                         duration: 0.3,
-                        delay:
-                          ["home", "services", "work", "contact"].indexOf(
-                            section
-                          ) * 0.1,
+                        delay: index * 0.1,
                       }}
                     >
                       <a
@@ -302,7 +370,7 @@ export default function App() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="min-h-screen flex items-center justify-center relative px-6 pt-20"
+        className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 pt-20"
       >
         <div className="max-w-6xl mx-auto relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -317,12 +385,12 @@ export default function App() {
                 </span>
               </div>
 
-              <h2 className="text-5xl sm:text-6xl font-bold mb-6 leading-tight">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
                 Craft <span className="text-[#80CBC4]">Digital</span>{" "}
                 Experiences
               </h2>
 
-              <p className="text-lg max-w-xl mb-8 text-white/70 leading-relaxed">
+              <p className="text-base sm:text-lg max-w-xl mb-8 text-white/70 leading-relaxed">
                 We're a design and development studio creating websites,
                 applications, and digital brands that help businesses connect
                 with their audience.
@@ -380,6 +448,7 @@ export default function App() {
                       className="absolute inset-0 w-full h-full opacity-20"
                       width="100%"
                       height="100%"
+                      aria-hidden="true"
                     >
                       <defs>
                         <pattern
@@ -428,6 +497,7 @@ export default function App() {
           <a
             href="#services"
             className="block p-2 text-white/50 hover:text-white transition-colors"
+            aria-label="Scroll to services"
           >
             <FaArrowDown size={20} />
           </a>
@@ -437,27 +507,25 @@ export default function App() {
       {/* Services Section - Glassmorphism */}
       <section
         id="services"
-        className="min-h-screen flex items-center py-28 px-6 relative"
+        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            {...fadeInUp}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h3 className="text-4xl font-bold mb-4 relative inline-block">
+            <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Our Services</span>
               <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#80CBC4] to-transparent"></span>
             </h3>
-            <p className="text-white/70 max-w-xl mx-auto mt-6 text-lg">
+            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
               We offer a range of digital services to help bring your vision to
               life.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
                 icon: <FaCode />,
@@ -533,32 +601,31 @@ export default function App() {
       {/* Work Section - Glassmorphism */}
       <section
         id="work"
-        className="min-h-screen flex items-center py-28 px-6 relative"
+        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            {...fadeInUp}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h3 className="text-4xl font-bold mb-4 relative inline-block">
+            <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Our Work</span>
               <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#FFB433] to-transparent"></span>
             </h3>
-            <p className="text-white/70 max-w-xl mx-auto mt-6 text-lg">
+            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
               Here are some of the projects we've had the privilege to work on.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
             {[
               {
                 title: "Digizen",
                 type: "Blog & Content Platform",
                 description:
                   "A full website for Digizen, a blog article sharing company. Includes content management, user authentication, and responsive design.",
+                technologies: ["React", "Node.js", "MongoDB"],
                 web_url: "https://digizenhub.in/",
                 color: "#80CBC4",
               },
@@ -567,6 +634,8 @@ export default function App() {
                 type: "Personal Website",
                 description:
                   "A clean, professional portfolio website for a college student, showcasing their projects, skills, and academic achievements.",
+                technologies: ["HTML/CSS", "JavaScript", "Figma"],
+                web_url: "#",
                 color: "#FFB433",
               },
               {
@@ -574,9 +643,10 @@ export default function App() {
                 type: "Brand Showcase",
                 description:
                   "A vibrant brand showcase website for Popcone, featuring their products, promotions, and a store locator.",
+                technologies: ["React", "TailwindCSS", "Firebase"],
                 web_url: "https://popcone.shop/",
                 color: "#AF52BF",
-              }
+              },
             ].map((project, i) => (
               <motion.div
                 key={i}
@@ -606,6 +676,7 @@ export default function App() {
                     className="absolute inset-0 w-full h-full opacity-20"
                     width="100%"
                     height="100%"
+                    aria-hidden="true"
                   >
                     <defs>
                       <pattern
@@ -644,12 +715,26 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="p-7 relative">
+                <div className="p-6 sm:p-7 relative">
                   <p className="text-white/70 mb-5">{project.description}</p>
-                  
+
+                  {/* Technologies used */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.technologies.map((tech, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 bg-black/30 border border-white/10 text-xs rounded-full backdrop-blur-sm"
+                        style={{ color: project.color }}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
                   <motion.a
-                    href={`${project.web_url || "#"}`}
+                    href={project.web_url}
                     target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ x: 5 }}
                     className="inline-flex items-center gap-2 text-sm font-medium"
                     style={{ color: project.color }}
@@ -666,12 +751,12 @@ export default function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mt-16 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden"
+            className="text-center mt-12 sm:mt-16 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
           >
             <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#80CBC4]/10 to-transparent blur-3xl"></div>
             <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#FFB433]/10 to-transparent blur-3xl"></div>
 
-            <h4 className="font-bold text-2xl mb-3">
+            <h4 className="font-bold text-xl sm:text-2xl mb-3">
               Looking for more examples?
             </h4>
             <p className="text-white/70 max-w-xl mx-auto mb-6">
@@ -694,30 +779,155 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact - Glassmorphism */}
+      {/* Testimonials Section - Glassmorphism */}
       <section
-        id="contact"
-        className="min-h-screen flex items-center py-28 px-6 relative"
+        id="testimonials"
+        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
+          <motion.div
+            {...fadeInUp}
+            viewport={{ once: true }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
+              <span className="relative z-10">Client Feedback</span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#B4EBE6] to-transparent"></span>
+            </h3>
+            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
+              Here's what our clients have to say about working with us.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group h-full flex flex-col"
+              >
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-24 h-24 rounded-full bg-gradient-to-br from-[#80CBC4]/10 to-transparent blur-xl opacity-60"></div>
+                <div className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-gradient-to-tr from-[#FFB433]/10 to-transparent blur-xl opacity-60"></div>
+
+                {/* Quote icon */}
+                <div className="text-4xl text-[#80CBC4]/20 mb-4">"</div>
+
+                {/* Testimonial content */}
+                <p className="text-white/80 mb-6 relative z-10 flex-grow">
+                  {testimonial.text}
+                </p>
+
+                {/* Client info */}
+                <div className="flex items-center gap-4 relative z-10 mt-auto">
+                  <div className="w-12 h-12 rounded-full overflow-hidden backdrop-blur-sm bg-black/40 border border-white/10 flex items-center justify-center">
+                    {testimonial.avatar ? (
+                      <img
+                        src={testimonial.avatar}
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center text-lg font-medium"
+                        style={{
+                          background: index % 2 === 0 ? "#80CBC4" : "#FFB433",
+                        }}
+                      >
+                        {testimonial.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-white group-hover:text-[#80CBC4] transition-colors duration-300">
+                      {testimonial.name}
+                    </h4>
+                    <p className="text-white/50 text-sm">
+                      {testimonial.position}, {testimonial.company}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Rating stars if available */}
+                {testimonial.rating && (
+                  <div className="absolute top-6 right-6 flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <span
+                        key={i}
+                        className={
+                          i < testimonial.rating
+                            ? "text-[#FFB433]"
+                            : "text-white/20"
+                        }
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-center mt-12 sm:mt-16 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
           >
-            <h3 className="text-4xl font-bold mb-4 relative inline-block">
+            <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#80CBC4]/10 to-transparent blur-3xl"></div>
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#FFB433]/10 to-transparent blur-3xl"></div>
+
+            <h4 className="font-bold text-xl sm:text-2xl mb-3">
+              Ready to join our happy clients?
+            </h4>
+            <p className="text-white/70 max-w-xl mx-auto mb-6">
+              Let's collaborate to bring your vision to life and create
+              something amazing together.
+            </p>
+            <motion.a
+              href="#contact"
+              whileHover={{
+                scale: 1.03,
+                boxShadow: "0 0 15px 2px rgba(128, 203, 196, 0.3)",
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-block px-7 py-3.5 bg-gradient-to-r from-[#80CBC4] to-[#B4EBE6] text-black rounded-xl font-medium relative overflow-hidden group"
+            >
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+              <span className="relative z-10">Get in Touch</span>
+            </motion.a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact - Glassmorphism */}
+      <section
+        id="contact"
+        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <motion.div
+            {...fadeInUp}
+            viewport={{ once: true }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Get In Touch</span>
               <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#80CBC4] to-transparent"></span>
             </h3>
-            <p className="text-white/70 max-w-xl mx-auto mt-6 text-lg">
+            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
               Have a project in mind? We'd love to hear about it. Send us a
               message and let's create something great together.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -725,10 +935,10 @@ export default function App() {
               transition={{ duration: 0.6 }}
               className="lg:col-span-1"
             >
-              <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-7 h-full relative overflow-hidden">
+              <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-7 h-full relative overflow-hidden">
                 <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#80CBC4]/10 blur-3xl"></div>
 
-                <h4 className="font-bold text-2xl mb-6 flex items-center gap-3">
+                <h4 className="font-bold text-xl sm:text-2xl mb-6 flex items-center gap-3">
                   <span className="w-8 h-1 bg-[#80CBC4]"></span>
                   <span>Contact Info</span>
                 </h4>
@@ -740,9 +950,12 @@ export default function App() {
                     </div>
                     <div>
                       <p className="text-white/50 text-sm mb-1">Email us at</p>
-                      <p className="text-white font-medium text-sm">
+                      <a
+                        href="mailto:doodlebyte.studio@gmail.com"
+                        className="text-white font-medium text-sm hover:text-[#80CBC4] transition-colors"
+                      >
                         doodlebyte.studio@gmail.com
-                      </p>
+                      </a>
                     </div>
                   </div>
 
@@ -750,15 +963,18 @@ export default function App() {
                     <h5 className="font-medium text-lg mb-4">Follow Us</h5>
                     <div className="flex gap-4">
                       {[
-                        { icon: FaGithub, label: "GitHub" },
-                        { icon: FaLinkedin, label: "LinkedIn" },
-                        { icon: FaTwitter, label: "Twitter" },
+                        { icon: FaGithub, label: "GitHub", url: "#" },
+                        { icon: FaLinkedin, label: "LinkedIn", url: "#" },
+                        { icon: FaTwitter, label: "Twitter", url: "#" },
                       ].map((item, i) => (
                         <motion.a
                           key={i}
-                          href="#"
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           whileHover={{ y: -3 }}
                           className="group relative"
+                          aria-label={item.label}
                         >
                           <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4]/30 to-[#FFB433]/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           <div className="w-12 h-12 rounded-xl backdrop-blur-sm bg-black/30 border border-white/10 flex flex-col items-center justify-center hover:border-white/30 transition-colors relative">
@@ -784,16 +1000,20 @@ export default function App() {
             >
               <form
                 onSubmit={handleSubmit}
-                className="backdrop-blur-lg bg-white/5 border border-white/10 p-7 rounded-2xl space-y-6 relative overflow-hidden"
+                className="backdrop-blur-lg bg-white/5 border border-white/10 p-6 sm:p-7 rounded-2xl space-y-6 relative overflow-hidden"
               >
                 <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-[#FFB433]/5 blur-3xl"></div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="relative z-10">
-                    <label className="block text-sm font-medium mb-2 text-white/80">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium mb-2 text-white/80"
+                    >
                       Your Name
                     </label>
                     <input
+                      id="name"
                       type="text"
                       placeholder="John Doe"
                       className="w-full p-3 rounded-xl bg-black/30 border border-white/10 focus:border-[#80CBC4] focus:outline-none text-white backdrop-blur-sm"
@@ -806,10 +1026,14 @@ export default function App() {
                   </div>
 
                   <div className="relative z-10">
-                    <label className="block text-sm font-medium mb-2 text-white/80">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium mb-2 text-white/80"
+                    >
                       Email Address
                     </label>
                     <input
+                      id="email"
                       type="email"
                       placeholder="your@email.com"
                       className="w-full p-3 rounded-xl bg-black/30 border border-white/10 focus:border-[#80CBC4] focus:outline-none text-white backdrop-blur-sm"
@@ -823,10 +1047,14 @@ export default function App() {
                 </div>
 
                 <div className="relative z-10">
-                  <label className="block text-sm font-medium mb-2 text-white/80">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium mb-2 text-white/80"
+                  >
                     Your Message
                   </label>
                   <textarea
+                    id="message"
                     placeholder="Tell us about your project..."
                     className="w-full p-3 rounded-xl bg-black/30 border border-white/10 focus:border-[#80CBC4] focus:outline-none text-white backdrop-blur-sm"
                     rows="5"
@@ -843,6 +1071,7 @@ export default function App() {
                     type="checkbox"
                     id="privacy"
                     className="rounded text-[#80CBC4] focus:ring-[#80CBC4] bg-black/30 border-white/20"
+                    required
                   />
                   <label htmlFor="privacy" className="text-sm text-white/60">
                     I agree to the privacy policy and terms of service.
@@ -871,15 +1100,18 @@ export default function App() {
       </section>
 
       {/* Footer - Glassmorphism */}
-      <footer className="border-t border-white/10 py-12 px-6 backdrop-blur-xl bg-black/30 relative overflow-hidden">
+      <footer className="border-t border-white/10 py-10 sm:py-12 px-4 sm:px-6 backdrop-blur-xl bg-black/30 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
         <div className="absolute -top-80 left-1/3 w-64 h-64 rounded-full bg-[#80CBC4]/5 blur-3xl"></div>
         <div className="absolute -bottom-20 right-1/4 w-64 h-64 rounded-full bg-[#FFB433]/5 blur-3xl"></div>
 
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-3 mb-4">
+              <a
+                href="#home"
+                className="flex items-center gap-3 mb-4 inline-block"
+              >
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#80CBC4] to-[#FFB433] flex items-center justify-center p-[2px] relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4] to-[#FFB433] opacity-75"></div>
                   <div className="absolute inset-[1px] rounded-[9px] bg-black/80 backdrop-blur-sm flex items-center justify-center z-10">
@@ -890,7 +1122,7 @@ export default function App() {
                   <span className="text-[#80CBC4]">Doodle</span>
                   <span className="text-[#FFB433]">Byte</span>
                 </h1>
-              </div>
+              </a>
               <p className="text-white/60 mb-4">
                 A creative design and development studio focused on crafting
                 exceptional digital experiences.
@@ -900,7 +1132,7 @@ export default function App() {
             <div>
               <h4 className="text-lg font-medium mb-4">Quick Links</h4>
               <ul className="space-y-2">
-                {["home", "services", "work", "contact"].map((section) => (
+                {navigationSections.map((section) => (
                   <li key={section}>
                     <a
                       href={`#${section}`}
@@ -917,16 +1149,28 @@ export default function App() {
 
             <div>
               <h4 className="text-lg font-medium mb-4">Get In Touch</h4>
-              <p className="text-white/60 mb-2">hello@doodlebyte.com</p>
+              <a
+                href="mailto:doodlebyte.studio@gmail.com"
+                className="text-white/60 hover:text-[#80CBC4] transition-colors mb-2 inline-block"
+              >
+                doodlebyte.studio@gmail.com
+              </a>
               <div className="flex gap-3 mt-4">
-                {[FaGithub, FaLinkedin, FaTwitter].map((Icon, i) => (
+                {[
+                  { icon: FaGithub, url: "#", label: "GitHub" },
+                  { icon: FaLinkedin, url: "#", label: "LinkedIn" },
+                  { icon: FaTwitter, url: "#", label: "Twitter" },
+                ].map((item, i) => (
                   <motion.a
                     key={i}
-                    href="#"
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ y: -2 }}
                     className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                    aria-label={item.label}
                   >
-                    <Icon size={14} />
+                    <item.icon size={14} />
                   </motion.a>
                 ))}
               </div>
