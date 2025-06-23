@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPalette,
@@ -24,6 +25,7 @@ export default function App() {
   const [contact, setContact] = useState({ name: "", email: "", message: "" });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const cursorRef = useRef(null);
@@ -49,22 +51,6 @@ export default function App() {
       name: "Tamil",
       position: "Student",
       company: "College Project",
-      rating: 5,
-      avatar: null,
-    },
-    {
-      text: "DoodleByte transformed our brand's online presence. Their attention to detail and creative solutions exceeded our expectations. The website they designed has significantly increased our user engagement.",
-      name: "Alex Morgan",
-      position: "Marketing Director",
-      company: "TechFlow Inc.",
-      rating: 5,
-      avatar: null,
-    },
-    {
-      text: "Working with DoodleByte was a seamless experience. They took our vague ideas and turned them into a stunning digital platform that perfectly represents our brand identity.",
-      name: "Sarah Johnson",
-      position: "Founder",
-      company: "Artisan Collective",
       rating: 5,
       avatar: null,
     },
@@ -261,7 +247,7 @@ export default function App() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#80CBC4] to-[#FFB433] flex items-center justify-center p-[2px] relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4] to-[#FFB433] opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="absolute inset-[1px] rounded-[9px] bg-black/80 backdrop-blur-sm flex items-center justify-center z-10">
-                    <FaRegLightbulb className="text-white text-lg" />
+                    <FaRegLightbulb className="text-white" size={20} />
                   </div>
                 </div>
                 <h1 className="text-2xl font-bold">
