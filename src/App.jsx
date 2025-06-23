@@ -15,10 +15,13 @@ import {
   FaVideo,
   FaLaptopCode,
   FaDesktop,
+  FaPhone,
+  FaWhatsapp
 } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { FaP } from "react-icons/fa6";
 
 export default function App() {
   // State management
@@ -949,9 +952,9 @@ export default function App() {
                     <h5 className="font-medium text-lg mb-4">Follow Us</h5>
                     <div className="flex gap-4">
                       {[
-                        { icon: FaGithub, label: "GitHub", url: "#" },
-                        { icon: FaLinkedin, label: "LinkedIn", url: "#" },
-                        { icon: FaTwitter, label: "Twitter", url: "#" },
+                        { icon: FaPhone, label: "Phone", url: "tel:+91 7358004687" },
+                        { icon: FaWhatsapp, label: "WhatsApp", url: "https://wa.me/+916384260325" },
+                        { icon: FaLinkedin, label: "LinkedIn", url: "https://www.linkedin.com/company/doodlebyte/" },
                       ].map((item, i) => (
                         <motion.a
                           key={i}
