@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPalette,
@@ -16,44 +15,102 @@ import {
   FaLaptopCode,
   FaDesktop,
   FaPhone,
-  FaWhatsapp
+  FaWhatsapp,
+  FaCamera,
+  FaBlog,
+  FaShoppingCart,
+  FaGraduationCap,
+  FaUniversity,
+  FaUtensils,
+  FaRocket,
+  FaStar,
+  FaGem,
+  FaMoon,
+  FaSun,
+  FaMagic, // New icon for AI/integration
+  FaFigma, // New icon for design tools
+  FaDumbbell, // New icon for fitness app
+  FaHome,
+  FaInstagram,
+  FaWhatsappSquare, // New icon for smart home
 } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { FaP } from "react-icons/fa6";
-
 export default function App() {
   // State management
   const [contact, setContact] = useState({ name: "", email: "", message: "" });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const cursorRef = useRef(null);
 
+  // Theme colors - Modern Purple-Teal color scheme
+  const themeColors = {
+    dark: {
+      primary: "#9333ea", // Purple-700
+      secondary: "#a855f7", // Purple-500
+      accent: "#14b8a6", // Teal-500
+      background: "#0F172A", // Slate-900
+      surface: "#1E293B", // Slate-800
+      text: "#F8FAFC", // Slate-50
+      textSecondary: "#CBD5E1", // Slate-300
+      border: "#334155", // Slate-700
+    },
+    light: {
+      primary: "#7e22ce", // Purple-800
+      secondary: "#9333ea", // Purple-700
+      accent: "#0d9488", // Teal-600
+      background: "#F8FAFC", // Slate-50
+      surface: "#FFFFFF", // White
+      text: "#0F172A", // Slate-900
+      textSecondary: "#475569", // Slate-600
+      border: "#E2E8F0", // Slate-200
+    },
+  };
+
+  const theme = isDarkMode ? themeColors.dark : themeColors.light;
+
   // Navigation sections defined in one place for consistency
   const navigationSections = useMemo(
     () => ["home", "services", "work", "testimonials", "contact"],
-    []
+    [],
   );
 
   // Testimonials data - easily add new testimonials here
   const testimonials = [
     {
-      text: "I expected a simple site over a long time, but the next day they surprised me with a stunning, modern website with an amazing UI. Truly, a site worth thousands made in just a day!",
+      text: "DoodleByte transformed our vision into a stunning, highly functional website. Their attention to detail and creative approach truly set them apart. The UI is simply amazing!",
       name: "Ashish Philip",
       position: "CEO",
       company: "Popcone",
       rating: 5,
-      avatar: null, // Add image URL here if available
+      avatar: null,
     },
     {
-      text: "Hey bro! Your design looks really cool and professional. The color combination is perfect, layout is clean, and overall it's very user-friendly. Great work, keep it going strong!",
+      text: "The design work is incredibly professional and visually appealing. The color schemes and layouts are clean and intuitive, making for an excellent user experience. Highly recommended!",
       name: "Tamil",
       position: "Student",
       company: "College Project",
+      rating: 5,
+      avatar: null,
+    },
+    {
+      text: "Our photography portfolio website is absolutely breathtaking. The responsive design works flawlessly, beautifully showcasing my work on all devices. A truly fantastic job!",
+      name: "Sarvesh Raj",
+      position: "Photographer",
+      company: "SarveshRaj Studio",
+      rating: 5,
+      avatar: null,
+    },
+    {
+      text: "The team delivered a modern and clean blog website that exceeded our expectations. The content management system is incredibly user-friendly, making updates a breeze.",
+      name: "Popcone Team",
+      position: "Content Creator",
+      company: "Popcone Blog",
       rating: 5,
       avatar: null,
     },
@@ -135,10 +192,10 @@ export default function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Redirect the email to a service or handle it as needed
-    const mailtoLink = `mailto:doodlebyte@gmail.com?subject=${encodeURIComponent(
-      `Contact from ${contact.name}`
+    const mailtoLink = `mailto:doodlebyte.studio@gmail.com?subject=${encodeURIComponent(
+      `Portfolio Inquiry from ${contact.name}`,
     )}&body=${encodeURIComponent(
-      `Email: ${contact.email}\n\n${contact.message}`
+      `Email: ${contact.email}\n\n${contact.message}`,
     )}`;
 
     window.open(mailtoLink, "_blank");
@@ -153,16 +210,21 @@ export default function App() {
       animate: { opacity: 1, y: 0 },
       transition: { duration: 0.6 },
     }),
-    []
+    [],
   );
 
   return (
-    <div className="font-sans text-white min-h-screen bg-black overflow-hidden relative">
+    <div
+      className={`font-sans min-h-screen overflow-hidden relative transition-all duration-500 ${
+        isDarkMode ? "bg-slate-900 text-slate-50" : "bg-slate-50 text-slate-900"
+      }`}
+    >
       {/* Custom cursor */}
       <div
         ref={cursorRef}
-        className="fixed w-8 h-8 rounded-full border-2 border-[#80CBC4] pointer-events-none z-[100] mix-blend-difference hidden md:block"
+        className={`fixed w-8 h-8 rounded-full border-2 pointer-events-none z-[100] mix-blend-difference hidden md:block transition-colors duration-300`}
         style={{
+          borderColor: theme.primary,
           transition:
             "transform 0.1s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease",
         }}
@@ -171,7 +233,11 @@ export default function App() {
       {/* Background gradients - optimized for performance */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div
-          className="absolute top-0 left-0 w-full h-full bg-gradient-radial from-[#80CBC4]/20 via-transparent to-transparent opacity-60"
+          className={`absolute top-0 left-0 w-full h-full transition-all duration-500 ${
+            isDarkMode
+              ? "bg-gradient-radial from-purple-700/20 via-transparent to-transparent opacity-60"
+              : "bg-gradient-radial from-purple-500/30 via-transparent to-transparent opacity-40"
+          }`}
           style={{
             transform: `translate(${
               (mousePosition.x / (window.innerWidth || 1)) * 20 - 10
@@ -180,7 +246,11 @@ export default function App() {
           }}
         />
         <div
-          className="absolute bottom-0 right-0 w-full h-full bg-gradient-radial from-[#FFB433]/20 via-transparent to-transparent opacity-40"
+          className={`absolute bottom-0 right-0 w-full h-full transition-all duration-500 ${
+            isDarkMode
+              ? "bg-gradient-radial from-teal-500/20 via-transparent to-transparent opacity-40"
+              : "bg-gradient-radial from-teal-400/25 via-transparent to-transparent opacity-30"
+          }`}
           style={{
             transform: `translate(${
               (mousePosition.x / (window.innerWidth || 1)) * -20 + 10
@@ -190,7 +260,11 @@ export default function App() {
             transition: "transform 0.5s ease-out",
           }}
         />
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
+        <div
+          className={`absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none ${
+            isDarkMode ? 'bg-[url("/noise.png")]' : 'bg-[url("/noise.png")]'
+          }`}
+        ></div>
       </div>
 
       {/* Animated particles/dots background - reduced number for better performance */}
@@ -198,7 +272,9 @@ export default function App() {
         {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-white/10"
+            className={`absolute rounded-full ${
+              isDarkMode ? "bg-slate-50/10" : "bg-slate-900/10"
+            } transition-colors duration-500`}
             initial={{
               x: Math.random() * (window.innerWidth || 1000),
               y: Math.random() * (window.innerHeight || 800),
@@ -236,7 +312,13 @@ export default function App() {
       </div>
 
       {/* Navbar - Glassmorphism */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b transition-all duration-300 ${
+          isDarkMode
+            ? "bg-slate-900/80 border-slate-700/50"
+            : "bg-slate-50/80 border-slate-200/50"
+        }`}
+      >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
             <motion.div
@@ -247,63 +329,137 @@ export default function App() {
               whileHover={{ scale: 1.02 }}
             >
               <a href="#home" className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#80CBC4] to-[#FFB433] flex items-center justify-center p-[2px] relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4] to-[#FFB433] opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute inset-[1px] rounded-[9px] bg-black/80 backdrop-blur-sm flex items-center justify-center z-10">
-                    <FaRegLightbulb className="text-white" size={20} />
-                  </div>
+                <div>
+                  <h1 className="text-2xl font-bold leading-tight">
+                    <span className="text-purple-500">Doodle</span>
+                    <span className="text-teal-500">Byte</span>
+                  </h1>
+                  <p
+                    className={`text-xs font-medium tracking-wide ${
+                      isDarkMode ? "text-slate-400" : "text-slate-600"
+                    }`}
+                  >
+                    Design Studio
+                  </p>
                 </div>
-                <h1 className="text-2xl font-bold">
-                  <span className="text-[#80CBC4]">Doodle</span>
-                  <span className="text-[#FFB433]">Byte</span>
-                </h1>
               </a>
             </motion.div>
 
             {/* Desktop Navigation */}
-            <ul className="hidden md:flex gap-6 lg:gap-10 font-medium">
-              {navigationSections.map((section) => (
-                <motion.li
-                  key={section}
-                  whileHover={{ scale: 1.05 }}
-                  className="relative group"
-                >
-                  <a
-                    href={`#${section}`}
-                    className={`relative px-1 py-2 transition-all duration-300 uppercase tracking-wider text-sm font-medium ${
-                      activeSection === section
-                        ? "text-[#80CBC4]"
-                        : "text-white/70 hover:text-white"
-                    }`}
+            <div className="hidden md:flex items-center gap-6 lg:gap-10">
+              <ul className="flex gap-6 lg:gap-10 font-medium">
+                {navigationSections.map((section) => (
+                  <motion.li
+                    key={section}
+                    whileHover={{ scale: 1.05 }}
+                    className="relative group"
                   >
-                    {section === "home"
-                      ? "Home"
-                      : section.charAt(0).toUpperCase() + section.slice(1)}
-                    <span className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#80CBC4] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
-                    {activeSection === section && (
-                      <motion.span
-                        layoutId="navIndicator"
-                        className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#80CBC4] to-transparent"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.2 }}
-                      />
-                    )}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
+                    <a
+                      href={`#${section}`}
+                      className={`relative px-1 py-2 transition-all duration-300 uppercase tracking-wider text-sm font-medium ${
+                        activeSection === section
+                          ? "text-purple-500"
+                          : isDarkMode
+                            ? "text-slate-400 hover:text-slate-100"
+                            : "text-slate-600 hover:text-slate-900"
+                      }`}
+                    >
+                      {section === "home"
+                        ? "Home"
+                        : section.charAt(0).toUpperCase() + section.slice(1)}
+                      <span className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
+                      {activeSection === section && (
+                        <motion.span
+                          layoutId="navIndicator"
+                          className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.2 }}
+                        />
+                      )}
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+
+              {/* Theme Toggle Button */}
+              <motion.button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`p-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
+                  isDarkMode
+                    ? "bg-slate-800/50 border-slate-600 hover:bg-slate-700/50"
+                    : "bg-slate-100/50 border-slate-300 hover:bg-slate-200/50"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Toggle theme"
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ rotate: isDarkMode ? 0 : 180 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {isDarkMode ? (
+                    <FaSun className="text-yellow-400" size={16} />
+                  ) : (
+                    <FaMoon className="text-purple-700" size={16} />
+                  )}
+                </motion.div>
+              </motion.button>
+            </div>
 
             {/* Mobile Navigation Toggle */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center gap-3">
+              {/* Mobile Theme Toggle */}
+              <motion.button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`p-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
+                  isDarkMode
+                    ? "bg-slate-800/50 border-slate-600 hover:bg-slate-700/50"
+                    : "bg-slate-100/50 border-slate-300 hover:bg-slate-200/50"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Toggle theme"
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ rotate: isDarkMode ? 0 : 180 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {isDarkMode ? (
+                    <FaSun className="text-yellow-400" size={14} />
+                  ) : (
+                    <FaMoon className="text-purple-700" size={14} />
+                  )}
+                </motion.div>
+              </motion.button>
+
+              {/* Mobile Menu Toggle */}
               <motion.button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 rounded-full hover:bg-white/5 transition-colors relative"
+                className={`p-2 rounded-full transition-colors relative ${
+                  isDarkMode ? "hover:bg-slate-800/50" : "hover:bg-slate-100/50"
+                }`}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Toggle menu"
               >
-                <div className="absolute inset-0 rounded-full bg-white/5 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                {isMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+                <div
+                  className={`absolute inset-0 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 ${
+                    isDarkMode ? "bg-slate-800/50" : "bg-slate-100/50"
+                  }`}
+                ></div>
+                {isMenuOpen ? (
+                  <HiX
+                    size={24}
+                    className={isDarkMode ? "text-slate-100" : "text-slate-900"}
+                  />
+                ) : (
+                  <HiMenu
+                    size={24}
+                    className={isDarkMode ? "text-slate-100" : "text-slate-900"}
+                  />
+                )}
               </motion.button>
             </div>
           </div>
@@ -317,7 +473,11 @@ export default function App() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden backdrop-blur-xl bg-black/40 overflow-hidden border-b border-white/10"
+              className={`md:hidden backdrop-blur-xl overflow-hidden border-b transition-all duration-300 ${
+                isDarkMode
+                  ? "bg-slate-800/90 border-slate-700/50"
+                  : "bg-slate-100/90 border-slate-200/50"
+              }`}
             >
               <div className="px-6 py-6">
                 <ul className="flex flex-col gap-4">
@@ -333,10 +493,12 @@ export default function App() {
                     >
                       <a
                         href={`#${section}`}
-                        className={`block py-2 text-lg ${
+                        className={`block py-2 text-lg transition-colors duration-300 ${
                           activeSection === section
-                            ? "text-[#80CBC4]"
-                            : "text-white/70"
+                            ? "text-purple-500"
+                            : isDarkMode
+                              ? "text-slate-300 hover:text-slate-100"
+                              : "text-slate-700 hover:text-slate-900"
                         }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -368,21 +530,33 @@ export default function App() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="mb-6 inline-block">
-                <span className="bg-gradient-to-r from-[#80CBC4] to-[#FFB433] px-4 py-1 rounded-full text-sm font-medium uppercase tracking-wider">
-                  Design Studio
+              <div className="mb-8 inline-block">
+                <span
+                  className={`bg-gradient-to-r from-purple-500 to-purple-600 px-5 py-2 rounded-full text-sm font-medium uppercase tracking-wider shadow-lg ${
+                    isDarkMode ? "text-white" : "text-white"
+                  }`}
+                >
+                  <FaRocket className="inline mr-2" size={12} />
+                  Digital Creators
                 </span>
               </div>
 
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                Craft <span className="text-[#80CBC4]">Digital</span>{" "}
-                Experiences
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+                Crafting <span className="text-purple-500">Exceptional</span>{" "}
+                <span className="relative inline-block">
+                  Digital Art
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-teal-500 rounded-full"></div>
+                </span>
               </h2>
 
-              <p className="text-base sm:text-lg max-w-xl mb-8 text-white/70 leading-relaxed">
-                We're a design and development studio creating websites,
-                applications, and digital brands that help businesses connect
-                with their audience.
+              <p
+                className={`text-base sm:text-lg max-w-xl mb-10 leading-relaxed ${
+                  isDarkMode ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                We are a creative studio dedicated to building captivating web
+                experiences, innovative applications, and powerful digital
+                brands that leave a lasting impression.
               </p>
 
               <motion.div
@@ -392,28 +566,38 @@ export default function App() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <motion.a
-                  href="#contact"
+                  href="#work"
                   whileHover={{
                     scale: 1.03,
-                    boxShadow: "0 0 15px 2px rgba(128, 203, 196, 0.3)",
+                    boxShadow: `0 0 20px 3px ${
+                      isDarkMode
+                        ? "rgba(147, 51, 234, 0.4)"
+                        : "rgba(147, 51, 234, 0.3)"
+                    }`,
                   }}
                   whileTap={{ scale: 0.97 }}
-                  className="px-7 py-3.5 bg-gradient-to-r from-[#80CBC4] to-[#B4EBE6] text-black rounded-xl font-medium flex items-center justify-center gap-2 relative overflow-hidden group"
+                  className="px-8 py-4 bg-gradient-to-r from-purple-500 to-teal-500 text-white rounded-xl font-bold flex items-center justify-center gap-3 relative overflow-hidden group shadow-lg"
                 >
                   <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-                  <span className="relative z-10 font-medium">
-                    Start a Project
+                  <FaGem className="relative z-10" size={16} />
+                  <span className="relative z-10 font-bold">
+                    View Our Projects
                   </span>
-                  <FaArrowRight className="ml-1 relative z-10" size={14} />
+                  <FaArrowRight className="relative z-10" size={14} />
                 </motion.a>
 
                 <motion.a
-                  href="#work"
+                  href="#contact"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="px-7 py-3.5 bg-transparent border border-white/20 text-white rounded-xl font-medium flex items-center justify-center gap-2 backdrop-blur-sm hover:bg-white/5 transition-colors"
+                  className={`px-8 py-4 bg-transparent border-2 rounded-xl font-medium flex items-center justify-center gap-3 backdrop-blur-sm transition-colors ${
+                    isDarkMode
+                      ? "border-slate-600 text-slate-100 hover:bg-slate-800/20"
+                      : "border-slate-300 text-slate-900 hover:bg-slate-100/20"
+                  }`}
                 >
-                  View Our Work
+                  <FaEnvelope size={14} />
+                  Get In Touch
                 </motion.a>
               </motion.div>
             </motion.div>
@@ -425,11 +609,35 @@ export default function App() {
               className="hidden lg:block"
             >
               <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-br from-[#80CBC4]/20 to-[#FFB433]/20 rounded-2xl blur-xl opacity-70"></div>
-                <div className="w-full h-[400px] rounded-2xl backdrop-blur-md bg-white/5 border border-white/10 p-1 relative overflow-hidden shadow-2xl">
+                <div
+                  className={`absolute -inset-4 bg-gradient-to-br rounded-2xl blur-xl opacity-70 ${
+                    isDarkMode
+                      ? "from-purple-500/20 to-teal-500/20"
+                      : "from-purple-400/30 to-teal-400/30"
+                  }`}
+                ></div>
+                <div
+                  className={`w-full h-[400px] rounded-2xl backdrop-blur-md border p-1 relative overflow-hidden shadow-2xl ${
+                    isDarkMode
+                      ? "bg-slate-800/20 border-slate-700/30"
+                      : "bg-slate-100/20 border-slate-200/30"
+                  }`}
+                >
                   {/* Abstract design elements */}
-                  <div className="absolute top-5 left-5 w-20 h-20 rounded-full bg-gradient-to-br from-[#80CBC4]/30 to-transparent blur-md"></div>
-                  <div className="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-gradient-to-tl from-[#FFB433]/30 to-transparent blur-xl"></div>
+                  <div
+                    className={`absolute top-5 left-5 w-20 h-20 rounded-full blur-md ${
+                      isDarkMode
+                        ? "bg-gradient-to-br from-purple-500/30 to-transparent"
+                        : "bg-gradient-to-br from-purple-400/40 to-transparent"
+                    }`}
+                  ></div>
+                  <div
+                    className={`absolute bottom-10 right-10 w-32 h-32 rounded-full blur-xl ${
+                      isDarkMode
+                        ? "bg-gradient-to-tl from-teal-500/30 to-transparent"
+                        : "bg-gradient-to-tl from-teal-400/40 to-transparent"
+                    }`}
+                  ></div>
 
                   <div className="absolute inset-0 overflow-hidden rounded-2xl">
                     {/* Design grid lines */}
@@ -449,7 +657,7 @@ export default function App() {
                           <path
                             d="M 40 0 L 0 0 0 40"
                             fill="none"
-                            stroke="white"
+                            stroke={isDarkMode ? "white" : "black"}
                             strokeWidth="0.5"
                           />
                         </pattern>
@@ -460,20 +668,45 @@ export default function App() {
                     {/* Design elements */}
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center w-full px-10">
                       <div className="flex items-center gap-4 mb-8">
-                        <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-                          <FaPalette className="text-[#80CBC4]" size={20} />
+                        <div
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                            isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
+                          }`}
+                        >
+                          <FaPalette className="text-purple-500" size={20} />
                         </div>
-                        <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-                          <FaCode className="text-[#FFB433]" size={20} />
+                        <div
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                            isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
+                          }`}
+                        >
+                          <FaCode className="text-teal-500" size={20} />
                         </div>
-                        <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-                          <FaDesktop className="text-white/80" size={20} />
+                        <div
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                            isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
+                          }`}
+                        >
+                          <FaDesktop
+                            className={`${
+                              isDarkMode ? "text-slate-300" : "text-slate-600"
+                            }`}
+                            size={20}
+                          />
                         </div>
                       </div>
 
-                      <div className="h-2 w-32 bg-gradient-to-r from-[#80CBC4] to-[#FFB433] rounded-full mb-6"></div>
-                      <div className="w-3/4 h-10 bg-white/10 rounded-lg mb-4"></div>
-                      <div className="w-full h-28 bg-white/5 rounded-lg"></div>
+                      <div className="h-2 w-32 bg-gradient-to-r from-purple-500 to-teal-500 rounded-full mb-6"></div>
+                      <div
+                        className={`w-3/4 h-10 rounded-lg mb-4 ${
+                          isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
+                        }`}
+                      ></div>
+                      <div
+                        className={`w-full h-28 rounded-lg ${
+                          isDarkMode ? "bg-slate-700/30" : "bg-slate-200/30"
+                        }`}
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -485,7 +718,11 @@ export default function App() {
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
           <a
             href="#services"
-            className="block p-2 text-white/50 hover:text-white transition-colors"
+            className={`block p-2 transition-colors ${
+              isDarkMode
+                ? "text-slate-400 hover:text-slate-100"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
             aria-label="Scroll to services"
           >
             <FaArrowDown size={20} />
@@ -505,12 +742,16 @@ export default function App() {
             className="text-center mb-12 sm:mb-16"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
-              <span className="relative z-10">Our Services</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#80CBC4] to-transparent"></span>
+              <span className="relative z-10">Our Expertise</span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
             </h3>
-            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
-              We offer a range of digital services to help bring your vision to
-              life.
+            <p
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
+                isDarkMode ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              We offer a comprehensive suite of digital services designed to
+              elevate your brand and captivate your audience.
             </p>
           </motion.div>
 
@@ -518,45 +759,45 @@ export default function App() {
             {[
               {
                 icon: <FaCode />,
-                color: "#80CBC4",
+                color: "#a855f7", // Purple-500
                 title: "Frontend Development",
                 description:
-                  "Modern, responsive interfaces built with React, ensuring seamless user experiences across all devices.",
+                  "Building visually stunning and highly interactive user interfaces with modern frameworks like React and Next.js.",
               },
               {
                 icon: <FaServer />,
-                color: "#FFB433",
+                color: "#14b8a6", // Teal-500
                 title: "Backend Development",
                 description:
-                  "Robust server solutions that power your applications with reliable and scalable infrastructure.",
+                  "Crafting robust, scalable, and secure server-side applications and APIs for seamless data management.",
               },
               {
                 icon: <FaPalette />,
-                color: "#B4EBE6",
+                color: "#9333ea", // Purple-700
                 title: "UI/UX Design",
                 description:
-                  "Intuitive and appealing user interfaces designed to enhance user engagement and satisfaction.",
+                  "Designing intuitive and engaging user experiences, from wireframing to pixel-perfect mockups with Figma.",
               },
               {
                 icon: <FaMobileAlt />,
-                color: "#80CBC4",
-                title: "Branding",
+                color: "#a855f7",
+                title: "Mobile App Development",
                 description:
-                  "Develop a cohesive visual identity that communicates your values and resonates with your audience.",
+                  "Developing native and cross-platform mobile applications that offer exceptional performance and user satisfaction.",
               },
               {
                 icon: <FaLaptopCode />,
-                color: "#FFB433",
+                color: "#14b8a6",
                 title: "Web Applications",
                 description:
-                  "Custom web applications tailored to your business needs with focus on performance and usability.",
+                  "Delivering custom web applications tailored to your unique business logic, focusing on efficiency and user-friendliness.",
               },
               {
                 icon: <FaVideo />,
-                color: "#B4EBE6",
-                title: "Video Editing",
+                color: "#9333ea",
+                title: "Digital Content Creation",
                 description:
-                  "Professional video editing to create engaging content for marketing, presentations, or social media.",
+                  "Producing compelling video, graphic, and written content to enhance your brand storytelling and online presence.",
               },
             ].map((service, i) => (
               <motion.div
@@ -566,21 +807,68 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 group relative overflow-hidden"
+                className={`backdrop-blur-lg border rounded-2xl p-6 transition-all duration-300 group relative overflow-hidden hover:shadow-2xl ${
+                  isDarkMode
+                    ? "bg-slate-800/20 border-slate-700/30 hover:border-slate-600/50"
+                    : "bg-slate-100/20 border-slate-200/30 hover:border-slate-300/50"
+                }`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="w-14 h-14 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center mb-5 relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4]/10 to-[#FFB433]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div style={{ color: service.color }} className="text-xl">
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                    isDarkMode
+                      ? "from-slate-700/20 to-transparent"
+                      : "from-slate-200/20 to-transparent"
+                  }`}
+                ></div>
+                <div
+                  className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-gradient-to-br opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                  style={{
+                    background: `radial-gradient(circle, ${service.color}30 0%, transparent 70%)`,
+                  }}
+                ></div>
+
+                <div
+                  className={`w-16 h-16 rounded-2xl backdrop-blur-sm border flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-300 ${
+                    isDarkMode
+                      ? "bg-slate-800/50 border-slate-700/50"
+                      : "bg-slate-100/50 border-slate-200/50"
+                  }`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-teal-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div
+                    style={{ color: service.color }}
+                    className="text-2xl relative z-10"
+                  >
                     {service.icon}
                   </div>
+                  <div
+                    className="absolute -top-1 -right-1 w-3 h-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"
+                    style={{ backgroundColor: service.color }}
+                  ></div>
                 </div>
-                <h4 className="font-bold text-xl mb-3 group-hover:text-[#80CBC4] transition-colors duration-300">
+
+                <h4
+                  className={`font-bold text-xl mb-4 group-hover:text-purple-500 transition-colors duration-300 ${
+                    isDarkMode ? "text-slate-100" : "text-slate-900"
+                  }`}
+                >
                   {service.title}
                 </h4>
-                <p className="text-white/60 group-hover:text-white/80 transition-colors duration-300">
+                <p
+                  className={`group-hover:text-opacity-100 transition-colors duration-300 leading-relaxed ${
+                    isDarkMode
+                      ? "text-slate-400 group-hover:text-slate-200"
+                      : "text-slate-600 group-hover:text-slate-800"
+                  }`}
+                >
                   {service.description}
                 </p>
+
+                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500/20 to-teal-500/20 flex items-center justify-center">
+                    <FaArrowRight size={12} style={{ color: service.color }} />
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -599,58 +887,121 @@ export default function App() {
             className="text-center mb-12 sm:mb-16"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
-              <span className="relative z-10">Our Work</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#FFB433] to-transparent"></span>
+              <span className="relative z-10">Our Portfolio</span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
             </h3>
-            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
-              Here are some of the projects we've had the privilege to work on.
+            <p
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
+                isDarkMode ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              Explore a selection of our most recent and impactful projects.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-10">
             {[
               {
                 title: "Digizen",
                 type: "Blog & Content Platform",
                 description:
-                  "A full website for Digizen, a blog article sharing company. Includes content management, user authentication, and responsive design.",
+                  "A full-featured platform for seamless blog content sharing, complete with robust content management and secure user authentication.",
                 technologies: ["React", "Node.js", "MongoDB"],
                 web_url: "https://digizenhub.in/",
-                color: "#80CBC4",
+                color: "#a855f7", // Purple-500
+                icon: <FaBlog />,
               },
               {
-                title: "Student Portfolio",
-                type: "Personal Website",
+                title: "SarveshRaj Photography",
+                type: "Photography Portfolio",
                 description:
-                  "A clean, professional portfolio website for a college student, showcasing their projects, skills, and academic achievements.",
-                technologies: ["HTML/CSS", "JavaScript", "Figma"],
-                web_url: "#",
-                color: "#FFB433",
+                  "An elegant and responsive online portfolio to beautifully showcase professional photography work with a stunning gallery system.",
+                technologies: ["React", "TailwindCSS", "JavaScript"],
+                web_url: "https://sarveshraj-photography.onrender.com/",
+                color: "#14b8a6", // Teal-500
+                icon: <FaCamera />,
               },
               {
-                title: "Popcone",
-                type: "Brand Showcase",
+                title: "Popcone Blog",
+                type: "Interactive Blog Platform",
                 description:
-                  "A vibrant brand showcase website for Popcone, featuring their products, promotions, and a store locator.",
+                  "A dynamic blog for Popcone, offering intuitive content publishing, engaging user features, and a sleek, modern design.",
+                technologies: ["Next.js", "Cloudinary", "Firebase"],
+                web_url: "https://popcone-blog.onrender.com/",
+                color: "#9333ea", // Purple-700
+                icon: <FaBlog />,
+              },
+              {
+                title: "Popcone Shop",
+                type: "E-commerce Platform",
+                description:
+                  "A vibrant e-commerce solution for Popcone, featuring a seamless shopping experience, secure payments, and engaging product displays.",
                 technologies: ["React", "TailwindCSS", "Firebase"],
                 web_url: "https://popcone.shop/",
-                color: "#AF52BF",
+                color: "#a855f7",
+                icon: <FaShoppingCart />,
               },
+              {
+                title: "SAAP",
+                type: "College Portal",
+                description:
+                  "A comprehensive portal for college students to manage their achievements, awards and more.",
+                technologies: ["React", "TailwindCSS", "Firebase"],
+                web_url: "https://saapsairamcse.vercel.app/",
+                color: "#14b8a6",
+                icon: <FaUniversity />,
+              },
+              {
+                title: "Zcan",
+                type: "Canteen Food Ordering",
+                description:" A user-friendly platform for canteen food ordering, allowing students to browse menus, place orders, and manage their food preferences.",
+                technologies: ["React", "PhonePe", "Firebase"],
+                web_url: "https://zcan.vercel.app/",
+                color: "#9333ea",
+                icon: <FaUtensils />,
+              }
             ].map((project, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.2 }}
-                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden group relative"
+                transition={{ duration: 0.6, delay: i * 0.15 }}
+                className={`backdrop-blur-lg border rounded-2xl overflow-hidden group relative ${
+                  isDarkMode
+                    ? "bg-slate-800/20 border-slate-700/30"
+                    : "bg-slate-100/20 border-slate-200/30"
+                }`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4]/10 to-[#FFB433]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                <div className="h-56 bg-black/20 relative flex items-center justify-center overflow-hidden">
+                <div
+                  className={`h-64 relative flex items-center justify-center overflow-hidden ${
+                    isDarkMode ? "bg-slate-900/40" : "bg-slate-100/40"
+                  }`}
+                >
+                  {/* Project icon in corner */}
+                  <div
+                    className={`absolute top-4 left-4 w-12 h-12 backdrop-blur-md border rounded-xl flex items-center justify-center ${
+                      isDarkMode
+                        ? "bg-slate-800/50 border-slate-700/50"
+                        : "bg-slate-100/50 border-slate-200/50"
+                    }`}
+                  >
+                    <div style={{ color: project.color }} className="text-xl">
+                      {project.icon}
+                    </div>
+                  </div>
+
                   {/* Abstract design elements in project preview */}
                   <div className="absolute inset-0">
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-black/60 to-transparent"></div>
+                    <div
+                      className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${
+                        isDarkMode
+                          ? "from-slate-900/60 to-transparent"
+                          : "from-slate-100/60 to-transparent"
+                      }`}
+                    ></div>
                     <div
                       className="absolute bottom-0 right-0 w-56 h-56 rounded-full"
                       style={{
@@ -677,7 +1028,7 @@ export default function App() {
                         <path
                           d="M 30 0 L 0 0 0 30"
                           fill="none"
-                          stroke="white"
+                          stroke={isDarkMode ? "white" : "black"}
                           strokeWidth="0.5"
                         />
                       </pattern>
@@ -685,34 +1036,59 @@ export default function App() {
                     <rect width="100%" height="100%" fill={`url(#grid-${i})`} />
                   </svg>
 
-                  <h3 className="text-3xl font-bold text-center z-10 relative">
-                    <span
-                      className="bg-clip-text text-transparent bg-gradient-to-r"
-                      style={{
-                        backgroundImage:
-                          i % 2 === 0
-                            ? "linear-gradient(to right, #80CBC4, #FFFFFF)"
-                            : "linear-gradient(to right, #FFB433, #FFFFFF)",
-                      }}
+                  <div className="text-center z-10 relative">
+                    <h3 className="text-3xl font-bold mb-2">
+                      <span
+                        className="bg-clip-text text-transparent bg-gradient-to-r"
+                        style={{
+                          backgroundImage: `linear-gradient(to right, ${
+                            project.color
+                          }, ${isDarkMode ? "#FFFFFF" : theme.text})`,
+                        }}
+                      >
+                        {project.title}
+                      </span>
+                    </h3>
+                    <p
+                      className={`text-sm font-medium tracking-wide ${
+                        isDarkMode ? "text-slate-400" : "text-slate-600"
+                      }`}
                     >
-                      {project.title}
-                    </span>
-                  </h3>
+                      {project.type}
+                    </p>
+                  </div>
 
-                  <div className="absolute top-4 right-4 px-3 py-1 backdrop-blur-md bg-white/10 border border-white/20 rounded-full text-xs">
-                    {project.type}
+                  <div
+                    className={`absolute top-4 right-4 px-3 py-1 backdrop-blur-md border rounded-full text-xs flex items-center gap-1 ${
+                      isDarkMode
+                        ? "bg-slate-800/50 border-slate-700/50"
+                        : "bg-slate-100/50 border-slate-200/50"
+                    }`}
+                  >
+                    <FaStar className="text-yellow-400" size={10} />
+                    Live
                   </div>
                 </div>
 
                 <div className="p-6 sm:p-7 relative">
-                  <p className="text-white/70 mb-5">{project.description}</p>
+                  <p
+                    className={`mb-5 leading-relaxed ${
+                      isDarkMode ? "text-slate-300" : "text-slate-600"
+                    }`}
+                  >
+                    {project.description}
+                  </p>
 
                   {/* Technologies used */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.technologies.map((tech, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-black/30 border border-white/10 text-xs rounded-full backdrop-blur-sm"
+                        className={`px-3 py-1.5 border text-xs rounded-full backdrop-blur-sm font-medium transition-all duration-300 ${
+                          isDarkMode
+                            ? "bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50"
+                            : "bg-slate-100/50 border-slate-200/50 hover:border-slate-300/50"
+                        }`}
                         style={{ color: project.color }}
                       >
                         {tech}
@@ -720,16 +1096,29 @@ export default function App() {
                     ))}
                   </div>
 
-                  <motion.a
-                    href={project.web_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ x: 5 }}
-                    className="inline-flex items-center gap-2 text-sm font-medium"
-                    style={{ color: project.color }}
-                  >
-                    View Project <FaArrowRight size={12} />
-                  </motion.a>
+                  <div className="flex items-center justify-between">
+                    <motion.a
+                      href={project.web_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ x: 5 }}
+                      className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
+                      style={{ color: project.color }}
+                    >
+                      <FaRocket size={12} />
+                      View Project <FaArrowRight size={12} />
+                    </motion.a>
+
+                    <div
+                      className={`flex items-center gap-1 text-xs ${
+                        isDarkMode ? "text-slate-400" : "text-slate-600"
+                      }`}
+                    >
+                      <FaRegLightbulb className="text-yellow-400" size={10} />{" "}
+                      {/* Changed FaStar to FaRegLightbulb for 'Live' indicator */}
+                      <span>Live</span>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -740,30 +1129,63 @@ export default function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mt-12 sm:mt-16 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
+            className="text-center mt-16 sm:mt-20 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-8 sm:p-10 relative overflow-hidden"
           >
-            <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#80CBC4]/10 to-transparent blur-3xl"></div>
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#FFB433]/10 to-transparent blur-3xl"></div>
+            <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gradient-to-br from-teal-500/10 to-transparent blur-3xl"></div>
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl"></div>
 
-            <h4 className="font-bold text-xl sm:text-2xl mb-3">
-              Looking for more examples?
-            </h4>
-            <p className="text-white/70 max-w-xl mx-auto mb-6">
-              We're a new studio actively expanding our portfolio. Contact us to
-              discuss how we can create something amazing together.
-            </p>
-            <motion.a
-              href="#contact"
-              whileHover={{
-                scale: 1.03,
-                boxShadow: "0 0 15px 2px rgba(255, 180, 51, 0.3)",
-              }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-block px-7 py-3.5 bg-gradient-to-r from-[#FFB433] to-[#FFB433]/80 text-black rounded-xl font-medium relative overflow-hidden group"
-            >
-              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-              <span className="relative z-10">Start a Conversation</span>
-            </motion.a>
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-teal-500 mb-6">
+                <FaRegLightbulb className="text-white" size={24} />
+              </div>
+              <h4 className="font-bold text-2xl sm:text-3xl mb-4">
+                Ready to Bring Your Idea to Life?
+              </h4>
+              <p
+                className={`max-w-2xl mx-auto mb-8 text-lg ${
+                  isDarkMode ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                We're passionate about crafting exceptional digital experiences.
+                Let's collaborate to transform your vision into a stunning
+                reality.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <motion.a
+                  href="#contact"
+                  whileHover={{
+                    scale: 1.03,
+                    boxShadow: `0 0 20px 3px ${
+                      isDarkMode
+                        ? "rgba(147, 51, 234, 0.4)"
+                        : "rgba(147, 51, 234, 0.3)"
+                    }`,
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-teal-500 text-white rounded-xl font-bold relative overflow-hidden group shadow-lg"
+                >
+                  <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                  <FaRocket className="mr-3 relative z-10" size={16} />
+                  <span className="relative z-10 font-bold">
+                    Start a Project
+                  </span>
+                </motion.a>
+
+                <motion.a
+                  href="#services"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`inline-flex items-center justify-center px-8 py-4 border-2 rounded-xl font-medium backdrop-blur-sm transition-colors ${
+                    isDarkMode
+                      ? "border-slate-600 text-slate-100 hover:bg-slate-800/20"
+                      : "border-slate-300 text-slate-900 hover:bg-slate-100/20"
+                  }`}
+                >
+                  <FaRegLightbulb className="mr-3" size={16} />
+                  Our Services
+                </motion.a>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -781,9 +1203,13 @@ export default function App() {
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Client Feedback</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#B4EBE6] to-transparent"></span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
             </h3>
-            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
+            <p
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
+                isDarkMode ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
               Here's what our clients have to say about working with us.
             </p>
           </motion.div>
@@ -796,23 +1222,49 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group h-full flex flex-col"
+                className={`backdrop-blur-lg border rounded-2xl p-6 relative overflow-hidden group h-full flex flex-col ${
+                  isDarkMode
+                    ? "bg-slate-800/20 border-slate-700/30"
+                    : "bg-slate-100/20 border-slate-200/30"
+                }`}
               >
                 {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-24 h-24 rounded-full bg-gradient-to-br from-[#80CBC4]/10 to-transparent blur-xl opacity-60"></div>
-                <div className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-gradient-to-tr from-[#FFB433]/10 to-transparent blur-xl opacity-60"></div>
+                <div
+                  className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl opacity-60 ${
+                    isDarkMode
+                      ? "bg-gradient-to-br from-purple-500/10 to-transparent"
+                      : "bg-gradient-to-br from-purple-400/20 to-transparent"
+                  }`}
+                ></div>
+                <div
+                  className={`absolute -bottom-10 -left-10 w-24 h-24 rounded-full blur-xl opacity-60 ${
+                    isDarkMode
+                      ? "bg-gradient-to-tr from-teal-500/10 to-transparent"
+                      : "bg-gradient-to-tr from-teal-400/20 to-transparent"
+                  }`}
+                ></div>
 
                 {/* Quote icon */}
-                <div className="text-4xl text-[#80CBC4]/20 mb-4">"</div>
+                <div className="text-4xl text-purple-500/20 mb-4">"</div>
 
                 {/* Testimonial content */}
-                <p className="text-white/80 mb-6 relative z-10 flex-grow">
+                <p
+                  className={`mb-6 relative z-10 flex-grow ${
+                    isDarkMode ? "text-slate-200" : "text-slate-700"
+                  }`}
+                >
                   {testimonial.text}
                 </p>
 
                 {/* Client info */}
                 <div className="flex items-center gap-4 relative z-10 mt-auto">
-                  <div className="w-12 h-12 rounded-full overflow-hidden backdrop-blur-sm bg-black/40 border border-white/10 flex items-center justify-center">
+                  <div
+                    className={`w-12 h-12 rounded-full overflow-hidden backdrop-blur-sm border flex items-center justify-center ${
+                      isDarkMode
+                        ? "bg-slate-800/50 border-slate-700/50"
+                        : "bg-slate-100/50 border-slate-200/50"
+                    }`}
+                  >
                     {testimonial.avatar ? (
                       <img
                         src={testimonial.avatar}
@@ -821,9 +1273,9 @@ export default function App() {
                       />
                     ) : (
                       <div
-                        className="w-full h-full flex items-center justify-center text-lg font-medium"
+                        className="w-full h-full flex items-center justify-center text-lg font-medium text-white"
                         style={{
-                          background: index % 2 === 0 ? "#80CBC4" : "#FFB433",
+                          background: index % 2 === 0 ? "#9333ea" : "#14b8a6", // Purple-700 or Teal-500
                         }}
                       >
                         {testimonial.name.charAt(0)}
@@ -831,10 +1283,18 @@ export default function App() {
                     )}
                   </div>
                   <div>
-                    <h4 className="font-medium text-white group-hover:text-[#80CBC4] transition-colors duration-300">
+                    <h4
+                      className={`font-medium group-hover:text-purple-500 transition-colors duration-300 ${
+                        isDarkMode ? "text-slate-100" : "text-slate-900"
+                      }`}
+                    >
                       {testimonial.name}
                     </h4>
-                    <p className="text-white/50 text-sm">
+                    <p
+                      className={`text-sm ${
+                        isDarkMode ? "text-slate-400" : "text-slate-600"
+                      }`}
+                    >
                       {testimonial.position}, {testimonial.company}
                     </p>
                   </div>
@@ -848,8 +1308,10 @@ export default function App() {
                         key={i}
                         className={
                           i < testimonial.rating
-                            ? "text-[#FFB433]"
-                            : "text-white/20"
+                            ? "text-yellow-400"
+                            : isDarkMode
+                              ? "text-slate-600"
+                              : "text-slate-300"
                         }
                       >
                         ★
@@ -869,27 +1331,47 @@ export default function App() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-center mt-12 sm:mt-16 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
           >
-            <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#80CBC4]/10 to-transparent blur-3xl"></div>
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-gradient-to-br from-[#FFB433]/10 to-transparent blur-3xl"></div>
+            <div
+              className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl ${
+                isDarkMode
+                  ? "bg-gradient-to-br from-purple-500/10 to-transparent"
+                  : "bg-gradient-to-br from-purple-400/20 to-transparent"
+              }`}
+            ></div>
+            <div
+              className={`absolute -bottom-24 -left-24 w-64 h-64 rounded-full blur-3xl ${
+                isDarkMode
+                  ? "bg-gradient-to-br from-teal-500/10 to-transparent"
+                  : "bg-gradient-to-br from-teal-400/20 to-transparent"
+              }`}
+            ></div>
 
             <h4 className="font-bold text-xl sm:text-2xl mb-3">
-              Ready to join our happy clients?
+              Ready to collaborate on your next big idea?
             </h4>
-            <p className="text-white/70 max-w-xl mx-auto mb-6">
-              Let's collaborate to bring your vision to life and create
-              something amazing together.
+            <p
+              className={`max-w-xl mx-auto mb-6 ${
+                isDarkMode ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              Let's connect and discuss how we can bring your digital vision to
+              life with our expertise and creativity.
             </p>
             <motion.a
               href="#contact"
               whileHover={{
                 scale: 1.03,
-                boxShadow: "0 0 15px 2px rgba(128, 203, 196, 0.3)",
+                boxShadow: `0 0 15px 2px ${
+                  isDarkMode
+                    ? "rgba(147, 51, 234, 0.3)"
+                    : "rgba(147, 51, 234, 0.2)"
+                }`,
               }}
               whileTap={{ scale: 0.98 }}
-              className="inline-block px-7 py-3.5 bg-gradient-to-r from-[#80CBC4] to-[#B4EBE6] text-black rounded-xl font-medium relative overflow-hidden group"
+              className="inline-block px-7 py-3.5 bg-gradient-to-r from-purple-500 to-teal-500 text-white rounded-xl font-medium relative overflow-hidden group"
             >
               <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-              <span className="relative z-10">Get in Touch</span>
+              <span className="relative z-10">Get a Free Consultation</span>
             </motion.a>
           </motion.div>
         </div>
@@ -907,12 +1389,16 @@ export default function App() {
             className="text-center mb-12 sm:mb-16"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
-              <span className="relative z-10">Get In Touch</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#80CBC4] to-transparent"></span>
+              <span className="relative z-10">Let's Connect</span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
             </h3>
-            <p className="text-white/70 max-w-xl mx-auto mt-6 text-base sm:text-lg">
-              Have a project in mind? We'd love to hear about it. Send us a
-              message and let's create something great together.
+            <p
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
+                isDarkMode ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              Have an exciting project in mind or just want to chat? Reach out
+              to us, and let's make something amazing together.
             </p>
           </motion.div>
 
@@ -924,56 +1410,111 @@ export default function App() {
               transition={{ duration: 0.6 }}
               className="lg:col-span-1"
             >
-              <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-7 h-full relative overflow-hidden">
-                <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#80CBC4]/10 blur-3xl"></div>
+              <div
+                className={`backdrop-blur-lg border rounded-2xl p-6 sm:p-7 h-full relative overflow-hidden ${
+                  isDarkMode
+                    ? "bg-slate-800/20 border-slate-700/30"
+                    : "bg-slate-100/20 border-slate-200/30"
+                }`}
+              >
+                <div
+                  className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl ${
+                    isDarkMode ? "bg-teal-500/10" : "bg-teal-400/10"
+                  }`}
+                ></div>
 
                 <h4 className="font-bold text-xl sm:text-2xl mb-6 flex items-center gap-3">
-                  <span className="w-8 h-1 bg-[#80CBC4]"></span>
-                  <span>Contact Info</span>
+                  <span className="w-8 h-1 bg-teal-500"></span>
+                  <span>Contact Details</span>
                 </h4>
 
                 <div className="space-y-8 relative z-10">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl backdrop-blur-sm bg-black/30 border border-white/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <FaEnvelope className="text-[#80CBC4]" size={16} />
+                    <div
+                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${
+                        isDarkMode
+                          ? "bg-slate-800/50 border-slate-700/50"
+                          : "bg-slate-100/50 border-slate-200/50"
+                      }`}
+                    >
+                      <FaEnvelope className="text-teal-500" size={16} />
                     </div>
                     <div>
-                      <p className="text-white/50 text-sm mb-1">Email us at</p>
+                      <p
+                        className={`text-sm mb-1 ${
+                          isDarkMode ? "text-white/70" : "text-slate-600"
+                        }`}
+                      >
+                        Email us at
+                      </p>
                       <a
                         href="mailto:doodlebyte.studio@gmail.com"
-                        className="text-white font-medium text-sm hover:text-[#80CBC4] transition-colors"
+                        className={`font-medium text-sm hover:text-teal-500 transition-colors ${
+                          isDarkMode ? "text-white" : "text-slate-900"
+                        }`}
                       >
                         doodlebyte.studio@gmail.com
                       </a>
                     </div>
                   </div>
 
-                  <div>
-                    <h5 className="font-medium text-lg mb-4">Follow Us</h5>
-                    <div className="flex gap-4">
-                      {[
-                        { icon: FaPhone, label: "Phone", url: "tel:+91 7358004687" },
-                        { icon: FaWhatsapp, label: "WhatsApp", url: "https://wa.me/+916384260325" },
-                        { icon: FaLinkedin, label: "LinkedIn", url: "https://www.linkedin.com/company/doodlebyte/" },
-                      ].map((item, i) => (
-                        <motion.a
-                          key={i}
-                          href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ y: -3 }}
-                          className="group relative"
-                          aria-label={item.label}
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4]/30 to-[#FFB433]/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <div className="w-12 h-12 rounded-xl backdrop-blur-sm bg-black/30 border border-white/10 flex flex-col items-center justify-center hover:border-white/30 transition-colors relative">
-                            <item.icon size={16} />
-                            <span className="text-[8px] mt-1 text-white/60">
-                              {item.label}
-                            </span>
-                          </div>
-                        </motion.a>
-                      ))}
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${
+                        isDarkMode
+                          ? "bg-slate-800/50 border-slate-700/50"
+                          : "bg-slate-100/50 border-slate-200/50"
+                      }`}
+                    >
+                      <FaPhone className="text-purple-500" size={16} />
+                    </div>
+                    <div>
+                      <p
+                        className={`text-sm mb-1 ${
+                          isDarkMode ? "text-white/70" : "text-slate-600"
+                        }`}
+                      >
+                        Call us
+                      </p>
+                      <a
+                        href="tel:+917358004687"
+                        className={`font-medium text-sm hover:text-purple-500 transition-colors ${
+                          isDarkMode ? "text-white" : "text-slate-900"
+                        }`}
+                      >
+                        +91 7358004687
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${
+                        isDarkMode
+                          ? "bg-slate-800/50 border-slate-700/50"
+                          : "bg-slate-100/50 border-slate-200/50"
+                      }`}
+                    >
+                      <FaWhatsapp className="text-green-500" size={16} />
+                    </div>
+                    <div>
+                      <p
+                        className={`text-sm mb-1 ${
+                          isDarkMode ? "text-white/70" : "text-slate-600"
+                        }`}
+                      >
+                        WhatsApp Us
+                      </p>
+                      <a
+                        href="https://wa.me/+916384260325"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`font-medium text-sm hover:text-green-500 transition-colors ${
+                          isDarkMode ? "text-white" : "text-slate-900"
+                        }`}
+                      >
+                        +91 6384260325
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -989,15 +1530,25 @@ export default function App() {
             >
               <form
                 onSubmit={handleSubmit}
-                className="backdrop-blur-lg bg-white/5 border border-white/10 p-6 sm:p-7 rounded-2xl space-y-6 relative overflow-hidden"
+                className={`backdrop-blur-lg border p-6 sm:p-7 rounded-2xl space-y-6 relative overflow-hidden ${
+                  isDarkMode
+                    ? "bg-slate-800/20 border-slate-700/30"
+                    : "bg-slate-100/20 border-slate-200/30"
+                }`}
               >
-                <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-[#FFB433]/5 blur-3xl"></div>
+                <div
+                  className={`absolute -bottom-20 -right-20 w-64 h-64 rounded-full blur-3xl ${
+                    isDarkMode ? "bg-purple-500/5" : "bg-purple-400/5"
+                  }`}
+                ></div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="relative z-10">
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium mb-2 text-white/80"
+                      className={`block text-sm font-medium mb-2 ${
+                        isDarkMode ? "text-white/80" : "text-slate-700"
+                      }`}
                     >
                       Your Name
                     </label>
@@ -1005,7 +1556,11 @@ export default function App() {
                       id="name"
                       type="text"
                       placeholder="John Doe"
-                      className="w-full p-3 rounded-xl bg-black/30 border border-white/10 focus:border-[#80CBC4] focus:outline-none text-white backdrop-blur-sm"
+                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
+                        isDarkMode
+                          ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
+                          : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
+                      }`}
                       value={contact.name}
                       onChange={(e) =>
                         setContact({ ...contact, name: e.target.value })
@@ -1017,7 +1572,9 @@ export default function App() {
                   <div className="relative z-10">
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium mb-2 text-white/80"
+                      className={`block text-sm font-medium mb-2 ${
+                        isDarkMode ? "text-white/80" : "text-slate-700"
+                      }`}
                     >
                       Email Address
                     </label>
@@ -1025,7 +1582,11 @@ export default function App() {
                       id="email"
                       type="email"
                       placeholder="your@email.com"
-                      className="w-full p-3 rounded-xl bg-black/30 border border-white/10 focus:border-[#80CBC4] focus:outline-none text-white backdrop-blur-sm"
+                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
+                        isDarkMode
+                          ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
+                          : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
+                      }`}
                       value={contact.email}
                       onChange={(e) =>
                         setContact({ ...contact, email: e.target.value })
@@ -1038,14 +1599,20 @@ export default function App() {
                 <div className="relative z-10">
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium mb-2 text-white/80"
+                    className={`block text-sm font-medium mb-2 ${
+                      isDarkMode ? "text-white/80" : "text-slate-700"
+                    }`}
                   >
                     Your Message
                   </label>
                   <textarea
                     id="message"
                     placeholder="Tell us about your project..."
-                    className="w-full p-3 rounded-xl bg-black/30 border border-white/10 focus:border-[#80CBC4] focus:outline-none text-white backdrop-blur-sm"
+                    className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
+                      isDarkMode
+                        ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
+                        : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
+                    }`}
                     rows="5"
                     value={contact.message}
                     onChange={(e) =>
@@ -1055,26 +1622,18 @@ export default function App() {
                   ></textarea>
                 </div>
 
-                <div className="flex items-center gap-2 relative z-10">
-                  <input
-                    type="checkbox"
-                    id="privacy"
-                    className="rounded text-[#80CBC4] focus:ring-[#80CBC4] bg-black/30 border-white/20"
-                    required
-                  />
-                  <label htmlFor="privacy" className="text-sm text-white/60">
-                    I agree to the privacy policy and terms of service.
-                  </label>
-                </div>
-
                 <motion.button
                   type="submit"
                   whileHover={{
                     scale: 1.02,
-                    boxShadow: "0 0 15px 2px rgba(128, 203, 196, 0.3)",
+                    boxShadow: `0 0 15px 2px ${
+                      isDarkMode
+                        ? "rgba(147, 51, 234, 0.3)"
+                        : "rgba(147, 51, 234, 0.2)"
+                    }`,
                   }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-3.5 rounded-xl font-medium bg-gradient-to-r from-[#80CBC4] to-[#B4EBE6] text-black text-sm flex items-center justify-center gap-2 relative overflow-hidden group"
+                  className="w-full py-3.5 rounded-xl font-medium bg-gradient-to-r from-purple-500 to-teal-500 text-white text-sm flex items-center justify-center gap-2 relative overflow-hidden group"
                 >
                   <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
                   <span className="relative z-10 font-medium">
@@ -1089,10 +1648,28 @@ export default function App() {
       </section>
 
       {/* Footer - Glassmorphism */}
-      <footer className="border-t border-white/10 py-10 sm:py-12 px-4 sm:px-6 backdrop-blur-xl bg-black/30 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
-        <div className="absolute -top-80 left-1/3 w-64 h-64 rounded-full bg-[#80CBC4]/5 blur-3xl"></div>
-        <div className="absolute -bottom-20 right-1/4 w-64 h-64 rounded-full bg-[#FFB433]/5 blur-3xl"></div>
+      <footer
+        className={`border-t py-10 sm:py-12 px-4 sm:px-6 backdrop-blur-xl relative overflow-hidden ${
+          isDarkMode
+            ? "border-slate-700/30 bg-slate-900/60"
+            : "border-slate-200/30 bg-slate-50/60"
+        }`}
+      >
+        <div
+          className={`absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none ${
+            isDarkMode ? 'bg-[url("/noise.png")]' : 'bg-[url("/noise.png")]'
+          }`}
+        ></div>
+        <div
+          className={`absolute -top-80 left-1/3 w-64 h-64 rounded-full blur-3xl ${
+            isDarkMode ? "bg-teal-500/5" : "bg-teal-400/5"
+          }`}
+        ></div>
+        <div
+          className={`absolute -bottom-20 right-1/4 w-64 h-64 rounded-full blur-3xl ${
+            isDarkMode ? "bg-purple-500/5" : "bg-purple-400/5"
+          }`}
+        ></div>
 
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-8">
@@ -1101,18 +1678,25 @@ export default function App() {
                 href="#home"
                 className="flex items-center gap-3 mb-4 inline-block"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#80CBC4] to-[#FFB433] flex items-center justify-center p-[2px] relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#80CBC4] to-[#FFB433] opacity-75"></div>
-                  <div className="absolute inset-[1px] rounded-[9px] bg-black/80 backdrop-blur-sm flex items-center justify-center z-10">
-                    <FaRegLightbulb className="text-white text-lg" />
-                  </div>
+                <div>
+                  <h1 className="text-2xl font-bold leading-tight">
+                    <span className="text-purple-500">Doodle</span>
+                    <span className="text-teal-500">Byte</span>
+                  </h1>
+                  <p
+                    className={`text-xs font-medium tracking-wide ${
+                      isDarkMode ? "text-slate-400" : "text-slate-600"
+                    }`}
+                  >
+                    Design Studio
+                  </p>
                 </div>
-                <h1 className="text-2xl font-bold">
-                  <span className="text-[#80CBC4]">Doodle</span>
-                  <span className="text-[#FFB433]">Byte</span>
-                </h1>
               </a>
-              <p className="text-white/60 mb-4">
+              <p
+                className={`mb-4 ${
+                  isDarkMode ? "text-slate-400" : "text-slate-600"
+                }`}
+              >
                 A creative design and development studio focused on crafting
                 exceptional digital experiences.
               </p>
@@ -1125,7 +1709,11 @@ export default function App() {
                   <li key={section}>
                     <a
                       href={`#${section}`}
-                      className="text-white/60 hover:text-[#80CBC4] transition-colors"
+                      className={`${
+                        isDarkMode
+                          ? "text-slate-400 hover:text-purple-400"
+                          : "text-slate-600 hover:text-purple-700"
+                      } transition-colors`}
                     >
                       {section === "home"
                         ? "Home"
@@ -1137,18 +1725,34 @@ export default function App() {
             </div>
 
             <div>
-              <h4 className="text-lg font-medium mb-4">Get In Touch</h4>
+              <h4 className="text-lg font-medium mb-4">Connect With Us</h4>
               <a
                 href="mailto:doodlebyte.studio@gmail.com"
-                className="text-white/60 hover:text-[#80CBC4] transition-colors mb-2 inline-block"
+                className={`${
+                  isDarkMode
+                    ? "text-slate-400 hover:text-teal-400"
+                    : "text-slate-600 hover:text-teal-700"
+                } transition-colors mb-2 inline-block`}
               >
                 doodlebyte.studio@gmail.com
               </a>
               <div className="flex gap-3 mt-4">
                 {[
-                  { icon: FaGithub, url: "#", label: "GitHub" },
-                  { icon: FaLinkedin, url: "#", label: "LinkedIn" },
-                  { icon: FaTwitter, url: "#", label: "Twitter" },
+                  {
+                    icon: FaWhatsappSquare,
+                    url: "https://wa.me/+916384260325",
+                    label: "WhatsApp",
+                  },
+                  {
+                    icon: FaLinkedin,
+                    url: "https://www.linkedin.com/company/doodlebyte/",
+                    label: "LinkedIn",
+                  },
+                  {
+                    icon: FaInstagram,
+                    url: "https://www.instagram.com/doodlebyte.studio/",
+                    label: "Instagram",
+                  },
                 ].map((item, i) => (
                   <motion.a
                     key={i}
@@ -1156,7 +1760,11 @@ export default function App() {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ y: -2 }}
-                    className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                      isDarkMode
+                        ? "bg-slate-800/50 hover:bg-slate-700/50 text-slate-400"
+                        : "bg-slate-100/50 hover:bg-slate-200/50 text-slate-600"
+                    }`}
                     aria-label={item.label}
                   >
                     <item.icon size={14} />
@@ -1166,20 +1774,36 @@ export default function App() {
             </div>
           </div>
 
-          <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-white/40 text-sm text-center md:text-left">
+          <div
+            className={`border-t pt-6 flex flex-col md:flex-row justify-between items-center gap-4 ${
+              isDarkMode ? "border-slate-700/30" : "border-slate-200/30"
+            }`}
+          >
+            <p
+              className={`text-sm text-center md:text-left ${
+                isDarkMode ? "text-slate-500" : "text-slate-500"
+              }`}
+            >
               &copy; {new Date().getFullYear()} DoodleByte. All rights reserved.
             </p>
             <div className="flex gap-6">
               <a
                 href="#"
-                className="text-white/40 text-sm hover:text-white/60 transition-colors"
+                className={`${
+                  isDarkMode
+                    ? "text-slate-500 hover:text-slate-300"
+                    : "text-slate-500 hover:text-slate-700"
+                } text-sm transition-colors`}
               >
                 Privacy Policy
               </a>
               <a
                 href="#"
-                className="text-white/40 text-sm hover:text-white/60 transition-colors"
+                className={`${
+                  isDarkMode
+                    ? "text-slate-500 hover:text-slate-300"
+                    : "text-slate-500 hover:text-slate-700"
+                } text-sm transition-colors`}
               >
                 Terms of Service
               </a>
