@@ -982,16 +982,16 @@ const handleSubmit = (e) => {
                 color: "#14b8a6", // Teal-500
                 icon: <FaCamera />,
               },
-              {
-                title: "Popcone Blog",
-                type: "Interactive Blog Platform",
-                description:
-                  "A dynamic blog for Popcone, offering intuitive content publishing, engaging user features, and a sleek, modern design.",
-                technologies: ["Next.js", "Cloudinary", "Firebase"],
-                web_url: "https://popcone-blog.onrender.com/",
-                color: "#9333ea", // Purple-700
-                icon: <FaBlog />,
-              },
+              // {
+              //   title: "Popcone Blog",
+              //   type: "Interactive Blog Platform",
+              //   description:
+              //     "A dynamic blog for Popcone, offering intuitive content publishing, engaging user features, and a sleek, modern design.",
+              //   technologies: ["Next.js", "Cloudinary", "Firebase"],
+              //   web_url: "https://popcone-blog.onrender.com/",
+              //   color: "#9333ea", // Purple-700
+              //   icon: <FaBlog />,
+              // },
               {
                 title: "Popcone Shop",
                 type: "E-commerce Platform",
@@ -1012,16 +1012,16 @@ const handleSubmit = (e) => {
                 color: "#14b8a6",
                 icon: <FaUniversity />,
               },
-              {
-                title: "Zcan",
-                type: "Canteen Food Ordering",
-                description:
-                  " A user-friendly platform for canteen food ordering, allowing students to browse menus, place orders, and manage their food preferences.",
-                technologies: ["React", "PhonePe", "Firebase"],
-                web_url: "https://zcan.vercel.app/",
-                color: "#9333ea",
-                icon: <FaUtensils />,
-              },
+              // {
+              //   title: "Zcan",
+              //   type: "Canteen Food Ordering",
+              //   description:
+              //     " A user-friendly platform for canteen food ordering, allowing students to browse menus, place orders, and manage their food preferences.",
+              //   technologies: ["React", "PhonePe", "Firebase"],
+              //   web_url: "https://zcan.vercel.app/",
+              //   color: "#9333ea",
+              //   icon: <FaUtensils />,
+              // },
             ].map((project, i) => (
               <motion.div
                 key={i}
