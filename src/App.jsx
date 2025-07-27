@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPalette,
@@ -33,13 +34,20 @@ import {
   FaHome,
   FaInstagram,
   FaWhatsappSquare, // New icon for smart home
+  FaCoins, // New icon for pricing
+  FaBriefcase, // Another icon for business
+  FaUsers, // Another icon for enterprise/team
 } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useState, useEffect, useRef, useMemo } from "react";
-import { Link } from "react-router-dom";
+
 export default function App() {
-  // State management
-  const [contact, setContact] = useState({ name: "", email: "", message: "" });
+  const [contact, setContact] = useState({
+    name: "",
+    email: "",
+    message: "",
+    plan: "",
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -76,8 +84,8 @@ export default function App() {
 
   // Navigation sections defined in one place for consistency
   const navigationSections = useMemo(
-    () => ["home", "services", "work", "testimonials", "contact"],
-    [],
+    () => ["home", "services", "work", "pricing", "testimonials", "contact"],
+    []
   );
 
   // Testimonials data - easily add new testimonials here
@@ -113,6 +121,59 @@ export default function App() {
       company: "Popcone Blog",
       rating: 5,
       avatar: null,
+    },
+  ];
+
+  // Pricing data
+  const pricingTiers = [
+    {
+      name: "Students & Startups",
+      price: "499+",
+      unit: "one-time",
+      features: [
+        "Basic Website/Portfolio",
+        "Responsive Design",
+        "24/7 Support",
+        "Up to 5 pages",
+        "Basic SEO Optimization",
+      ],
+      icon: FaGraduationCap,
+      color: "#a855f7",
+      buttonText: "Get Started",
+      value: "Students & Startups (Basic Plan)",
+    },
+    {
+      name: "Small-Scale Businesses",
+      price: "1999+",
+      unit: "per month",
+      features: [
+        "Custom Web Application",
+        "Full Stack Development",
+        "3-month Support & Maintenance",
+        "E-commerce Integration",
+        "Advanced SEO & Analytics",
+      ],
+      icon: FaBriefcase,
+      color: "#14b8a6",
+      buttonText: "Choose Plan",
+      isHighlighted: true,
+      value: "Small-Scale Businesses (Standard Plan)",
+    },
+    {
+      name: "Enterprise Solutions",
+      price: "Contact Us",
+      unit: "",
+      features: [
+        "Complex Enterprise Systems",
+        "Dedicated Development Team",
+        "Custom Integrations",
+        "Ongoing Premium Support",
+        "Scalability & Security Audits",
+      ],
+      icon: FaUsers,
+      color: "#9333ea",
+      buttonText: "Inquire Now",
+      value: "Enterprise Solutions (Premium Plan)",
     },
   ];
 
@@ -189,19 +250,19 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [navigationSections]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Redirect the email to a service or handle it as needed
-    const mailtoLink = `mailto:doodlebyte.studio@gmail.com?subject=${encodeURIComponent(
-      `Portfolio Inquiry from ${contact.name}`,
-    )}&body=${encodeURIComponent(
-      `Email: ${contact.email}\n\n${contact.message}`,
-    )}`;
+const handleSubmit = (e) => {
+  e.preventDefault();
+  // Redirect the email to a service or handle it as needed
+  const mailtoLink = `mailto:doodlebyte.studio@gmail.com?subject=${encodeURIComponent(
+    `Portfolio Inquiry from ${contact.name}`
+  )}&body=${encodeURIComponent(
+    `Email: ${contact.email}\nPlan: ${contact.plan}\n\n${contact.message}`
+  )}`; // Included contact.plan in the email body
 
-    window.open(mailtoLink, "_blank");
-    // Reset the form
-    setContact({ name: "", email: "", message: "" });
-  };
+  window.open(mailtoLink, "_blank");
+  // Reset the form
+  setContact({ name: "", email: "", message: "", plan: "" }); // Reset plan as well
+};
 
   // Memoized animation variants for better performance
   const fadeInUp = useMemo(
@@ -210,7 +271,7 @@ export default function App() {
       animate: { opacity: 1, y: 0 },
       transition: { duration: 0.6 },
     }),
-    [],
+    []
   );
 
   return (
@@ -360,8 +421,8 @@ export default function App() {
                         activeSection === section
                           ? "text-purple-500"
                           : isDarkMode
-                            ? "text-slate-400 hover:text-slate-100"
-                            : "text-slate-600 hover:text-slate-900"
+                          ? "text-slate-400 hover:text-slate-100"
+                          : "text-slate-600 hover:text-slate-900"
                       }`}
                     >
                       {section === "home"
@@ -497,8 +558,8 @@ export default function App() {
                           activeSection === section
                             ? "text-purple-500"
                             : isDarkMode
-                              ? "text-slate-300 hover:text-slate-100"
-                              : "text-slate-700 hover:text-slate-900"
+                            ? "text-slate-300 hover:text-slate-100"
+                            : "text-slate-700 hover:text-slate-900"
                         }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -954,12 +1015,13 @@ export default function App() {
               {
                 title: "Zcan",
                 type: "Canteen Food Ordering",
-                description:" A user-friendly platform for canteen food ordering, allowing students to browse menus, place orders, and manage their food preferences.",
+                description:
+                  " A user-friendly platform for canteen food ordering, allowing students to browse menus, place orders, and manage their food preferences.",
                 technologies: ["React", "PhonePe", "Firebase"],
                 web_url: "https://zcan.vercel.app/",
                 color: "#9333ea",
                 icon: <FaUtensils />,
-              }
+              },
             ].map((project, i) => (
               <motion.div
                 key={i}
@@ -1190,6 +1252,159 @@ export default function App() {
         </div>
       </section>
 
+      {/* Pricing Section - Glassmorphism */}
+      <section
+        id="pricing"
+        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <motion.div
+            {...fadeInUp}
+            viewport={{ once: true }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
+              <span className="relative z-10">Flexible Pricing</span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
+            </h3>
+            <p
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
+                isDarkMode ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              Find the perfect plan for your digital needs, from startups to
+              enterprises.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 items-stretch">
+            {pricingTiers.map((tier, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className={`backdrop-blur-lg border rounded-2xl p-6 relative overflow-hidden group flex flex-col justify-between ${
+                  isDarkMode
+                    ? "bg-slate-800/20 border-slate-700/30"
+                    : "bg-slate-100/20 border-slate-200/30"
+                } ${
+                  tier.isHighlighted
+                    ? isDarkMode
+                      ? "border-purple-500/50 shadow-lg shadow-purple-500/20"
+                      : "border-purple-500/50 shadow-lg shadow-purple-400/20"
+                    : ""
+                }`}
+              >
+                {tier.isHighlighted && (
+                  <div className="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-gradient-to-r from-purple-500 to-teal-500 text-white text-xs font-bold rounded-full uppercase tracking-wider shadow-md">
+                    Popular
+                  </div>
+                )}
+
+                <div
+                  className={`absolute -top-10 -right-10 w-24 h-24 rounded-full blur-xl opacity-60 ${
+                    isDarkMode
+                      ? "bg-gradient-to-br from-purple-500/10 to-transparent"
+                      : "bg-gradient-to-br from-purple-400/20 to-transparent"
+                  }`}
+                ></div>
+
+                <div className="text-center mb-6 pt-4">
+                  <div
+                    className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center backdrop-blur-sm border ${
+                      isDarkMode
+                        ? "bg-slate-800/50 border-slate-700/50"
+                        : "bg-slate-100/50 border-slate-200/50"
+                    }`}
+                  >
+                    <tier.icon
+                      size={24}
+                      style={{ color: tier.color }}
+                      className="group-hover:scale-110 transition-transform"
+                    />
+                  </div>
+                  <h4
+                    className={`font-bold text-2xl mb-2 ${
+                      isDarkMode ? "text-slate-100" : "text-slate-900"
+                    }`}
+                  >
+                    {tier.name}
+                  </h4>
+                  {tier.price !== "Contact Us" ? (
+                    <p className="text-4xl font-extrabold text-purple-500">
+                      ₹{tier.price}
+                      <br />
+                      <span
+                        className={`text-base font-medium ${
+                          isDarkMode ? "text-slate-400" : "text-slate-600"
+                        }`}
+                      >
+                        {tier.unit}
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="text-3xl font-extrabold text-teal-500">
+                      {tier.price}
+                    </p>
+                  )}
+                </div>
+
+                <ul className="space-y-3 mb-8 flex-grow">
+                  {tier.features.map((feature, i) => (
+                    <li
+                      key={i}
+                      className={`flex items-center gap-3 ${
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
+                      }`}
+                    >
+                      <FaArrowRight size={14} className="text-teal-500" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <motion.a
+                  href="#contact"
+                  whileHover={{
+                    scale: 1.02,
+                    boxShadow: `0 0 15px 2px ${
+                      tier.isHighlighted
+                        ? isDarkMode
+                          ? "rgba(147, 51, 234, 0.4)"
+                          : "rgba(147, 51, 234, 0.3)"
+                        : isDarkMode
+                        ? "rgba(20, 184, 166, 0.3)"
+                        : "rgba(13, 148, 136, 0.2)"
+                    }`,
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 relative overflow-hidden group text-sm ${
+                    tier.isHighlighted
+                      ? "bg-gradient-to-r from-purple-500 to-teal-500 text-white"
+                      : isDarkMode
+                      ? "bg-slate-700/50 text-slate-100 border border-slate-600 hover:bg-slate-600/50"
+                      : "bg-slate-200/50 text-slate-900 border border-slate-300 hover:bg-slate-300/50"
+                  }`}
+                >
+                  <span
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${
+                      tier.isHighlighted ? "bg-white" : ""
+                    }`}
+                  ></span>
+                  <span className="relative z-10">{tier.buttonText}</span>
+                  {tier.price !== "Contact Us" && (
+                    <FaArrowRight size={12} className="relative z-10" />
+                  )}
+                </motion.a>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section - Glassmorphism */}
       <section
         id="testimonials"
@@ -1310,8 +1525,8 @@ export default function App() {
                           i < testimonial.rating
                             ? "text-yellow-400"
                             : isDarkMode
-                              ? "text-slate-600"
-                              : "text-slate-300"
+                            ? "text-slate-600"
+                            : "text-slate-300"
                         }
                       >
                         ★
@@ -1593,6 +1808,40 @@ export default function App() {
                       }
                       required
                     />
+                  </div>
+
+                  {/* INSERT THE NEW DROPDOWN HERE */}
+                  <div className="relative z-10">
+                    <label
+                      htmlFor="plan"
+                      className={`block text-sm font-medium mb-2 ${
+                        isDarkMode ? "text-white/80" : "text-slate-700"
+                      }`}
+                    >
+                      Your Plan
+                    </label>
+                    <select
+                      id="plan"
+                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
+                        isDarkMode
+                          ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
+                          : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
+                      }`}
+                      value={contact.plan}
+                      onChange={(e) =>
+                        setContact({ ...contact, plan: e.target.value })
+                      }
+                      required
+                    >
+                      <option value="" disabled>
+                        Select a plan
+                      </option>
+                      {pricingTiers.map((tier) => (
+                        <option key={tier.name} value={tier.value}>
+                          {tier.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
