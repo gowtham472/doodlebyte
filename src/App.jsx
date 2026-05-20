@@ -53,30 +53,31 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [scrollY, setScrollY] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const cursorRef = useRef(null);
 
-  // Theme colors - Modern Purple-Teal color scheme
+  // Theme colors - Professional Black, Blue, White scheme
   const themeColors = {
     dark: {
-      primary: "#9333ea", // Purple-700
-      secondary: "#a855f7", // Purple-500
-      accent: "#14b8a6", // Teal-500
-      background: "#0F172A", // Slate-900
-      surface: "#1E293B", // Slate-800
-      text: "#F8FAFC", // Slate-50
-      textSecondary: "#CBD5E1", // Slate-300
-      border: "#334155", // Slate-700
+      primary: "#2563eb", // Blue-600
+      secondary: "#3b82f6", // Blue-500
+      accent: "#60a5fa", // Blue-400
+      background: "#000000", // Pure Black
+      surface: "#1a1a1a", // Dark Gray
+      text: "#FFFFFF", // Pure White
+      textSecondary: "#9ca3af", // Gray-400
+      border: "#333333", // Dark Border
     },
     light: {
-      primary: "#7e22ce", // Purple-800
-      secondary: "#9333ea", // Purple-700
-      accent: "#0d9488", // Teal-600
-      background: "#F8FAFC", // Slate-50
-      surface: "#FFFFFF", // White
-      text: "#0F172A", // Slate-900
-      textSecondary: "#475569", // Slate-600
-      border: "#E2E8F0", // Slate-200
+      primary: "#1d4ed8", // Blue-700
+      secondary: "#2563eb", // Blue-600
+      accent: "#3b82f6", // Blue-500
+      background: "#FFFFFF", // Pure White
+      surface: "#f8f9fa", // Light Gray
+      text: "#000000", // Pure Black
+      textSecondary: "#6b7280", // Gray-500
+      border: "#e5e7eb", // Light Border
     },
   };
 
@@ -138,7 +139,7 @@ export default function App() {
         "Basic SEO Optimization",
       ],
       icon: FaGraduationCap,
-      color: "#a855f7",
+      color: "#3b82f6",
       buttonText: "Get Started",
       value: "Students & Startups (Basic Plan)",
     },
@@ -154,7 +155,7 @@ export default function App() {
         "Advanced SEO & Analytics",
       ],
       icon: FaBriefcase,
-      color: "#14b8a6",
+      color: "#2563eb",
       buttonText: "Choose Plan",
       isHighlighted: true,
       value: "Small-Scale Businesses (Standard Plan)",
@@ -171,7 +172,7 @@ export default function App() {
         "Scalability & Security Audits",
       ],
       icon: FaUsers,
-      color: "#9333ea",
+      color: "#1d4ed8",
       buttonText: "Inquire Now",
       value: "Enterprise Solutions (Premium Plan)",
     },
@@ -250,19 +251,19 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [navigationSections]);
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  // Redirect the email to a service or handle it as needed
-  const mailtoLink = `mailto:doodlebyte.studio@gmail.com?subject=${encodeURIComponent(
-    `Portfolio Inquiry from ${contact.name}`
-  )}&body=${encodeURIComponent(
-    `Email: ${contact.email}\nPlan: ${contact.plan}\n\n${contact.message}`
-  )}`; // Included contact.plan in the email body
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Redirect the email to a service or handle it as needed
+    const mailtoLink = `mailto:doodlebyte.studio@gmail.com?subject=${encodeURIComponent(
+      `Portfolio Inquiry from ${contact.name}`
+    )}&body=${encodeURIComponent(
+      `Email: ${contact.email}\nPlan: ${contact.plan}\n\n${contact.message}`
+    )}`; // Included contact.plan in the email body
 
-  window.open(mailtoLink, "_blank");
-  // Reset the form
-  setContact({ name: "", email: "", message: "", plan: "" }); // Reset plan as well
-};
+    window.open(mailtoLink, "_blank");
+    // Reset the form
+    setContact({ name: "", email: "", message: "", plan: "" }); // Reset plan as well
+  };
 
   // Memoized animation variants for better performance
   const fadeInUp = useMemo(
@@ -276,9 +277,8 @@ const handleSubmit = (e) => {
 
   return (
     <div
-      className={`font-sans min-h-screen overflow-hidden relative transition-all duration-500 ${
-        isDarkMode ? "bg-slate-900 text-slate-50" : "bg-slate-50 text-slate-900"
-      }`}
+      className={`font-sans min-h-screen overflow-hidden relative transition-all duration-500 ${isDarkMode ? "bg-black text-white" : "bg-white text-black"
+        }`}
     >
       {/* Custom cursor */}
       <div
@@ -291,41 +291,10 @@ const handleSubmit = (e) => {
         }}
       />
 
-      {/* Background gradients - optimized for performance */}
+      {/* Solid background - no gradients */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div
-          className={`absolute top-0 left-0 w-full h-full transition-all duration-500 ${
-            isDarkMode
-              ? "bg-gradient-radial from-purple-700/20 via-transparent to-transparent opacity-60"
-              : "bg-gradient-radial from-purple-500/30 via-transparent to-transparent opacity-40"
-          }`}
-          style={{
-            transform: `translate(${
-              (mousePosition.x / (window.innerWidth || 1)) * 20 - 10
-            }px, ${(mousePosition.y / (window.innerHeight || 1)) * 20 - 10}px)`,
-            transition: "transform 0.5s ease-out",
-          }}
-        />
-        <div
-          className={`absolute bottom-0 right-0 w-full h-full transition-all duration-500 ${
-            isDarkMode
-              ? "bg-gradient-radial from-teal-500/20 via-transparent to-transparent opacity-40"
-              : "bg-gradient-radial from-teal-400/25 via-transparent to-transparent opacity-30"
-          }`}
-          style={{
-            transform: `translate(${
-              (mousePosition.x / (window.innerWidth || 1)) * -20 + 10
-            }px, ${
-              (mousePosition.y / (window.innerHeight || 1)) * -20 + 10
-            }px)`,
-            transition: "transform 0.5s ease-out",
-          }}
-        />
-        <div
-          className={`absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none ${
-            isDarkMode ? 'bg-[url("/noise.png")]' : 'bg-[url("/noise.png")]'
-          }`}
-        ></div>
+        <div className={`absolute inset-0 ${isDarkMode ? "bg-black" : "bg-white"
+          }`}></div>
       </div>
 
       {/* Animated particles/dots background - reduced number for better performance */}
@@ -333,9 +302,8 @@ const handleSubmit = (e) => {
         {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
             key={i}
-            className={`absolute rounded-full ${
-              isDarkMode ? "bg-slate-50/10" : "bg-slate-900/10"
-            } transition-colors duration-500`}
+            className={`absolute rounded-full ${isDarkMode ? "bg-blue-500/5" : "bg-blue-500/5"
+              } transition-colors duration-500`}
             initial={{
               x: Math.random() * (window.innerWidth || 1000),
               y: Math.random() * (window.innerHeight || 800),
@@ -374,11 +342,10 @@ const handleSubmit = (e) => {
 
       {/* Navbar - Glassmorphism */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b transition-all duration-300 ${
-          isDarkMode
-            ? "bg-slate-900/80 border-slate-700/50"
-            : "bg-slate-50/80 border-slate-200/50"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b transition-all duration-300 ${isDarkMode
+          ? "bg-black/90 border-gray-800"
+          : "bg-white/90 border-gray-200"
+          }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
@@ -392,13 +359,12 @@ const handleSubmit = (e) => {
               <a href="#home" className="flex items-center space-x-3">
                 <div>
                   <h1 className="text-2xl font-bold leading-tight">
-                    <span className="text-purple-500">Doodle</span>
-                    <span className="text-teal-500">Byte</span>
+                    <span className="text-blue-500">Doodle</span>
+                    <span className="text-blue-400">Byte</span>
                   </h1>
                   <p
-                    className={`text-xs font-medium tracking-wide ${
-                      isDarkMode ? "text-slate-400" : "text-slate-600"
-                    }`}
+                    className={`text-xs font-medium tracking-wide ${isDarkMode ? "text-gray-500" : "text-gray-700"
+                      }`}
                   >
                     Design Studio
                   </p>
@@ -417,22 +383,21 @@ const handleSubmit = (e) => {
                   >
                     <a
                       href={`#${section}`}
-                      className={`relative px-1 py-2 transition-all duration-300 uppercase tracking-wider text-sm font-medium ${
-                        activeSection === section
-                          ? "text-purple-500"
-                          : isDarkMode
-                          ? "text-slate-400 hover:text-slate-100"
-                          : "text-slate-600 hover:text-slate-900"
-                      }`}
+                      className={`relative px-1 py-2 transition-all duration-300 uppercase tracking-wider text-sm font-medium ${activeSection === section
+                        ? "text-blue-500"
+                        : isDarkMode
+                          ? "text-gray-400 hover:text-white"
+                          : "text-gray-600 hover:text-black"
+                        }`}
                     >
                       {section === "home"
                         ? "Home"
                         : section.charAt(0).toUpperCase() + section.slice(1)}
-                      <span className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
+                      <span className="absolute inset-x-0 bottom-0 h-[2px] bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
                       {activeSection === section && (
                         <motion.span
                           layoutId="navIndicator"
-                          className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
+                          className="absolute inset-x-0 bottom-0 h-[2px] bg-blue-500"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.2 }}
@@ -446,11 +411,10 @@ const handleSubmit = (e) => {
               {/* Theme Toggle Button */}
               <motion.button
                 onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`p-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
-                  isDarkMode
-                    ? "bg-slate-800/50 border-slate-600 hover:bg-slate-700/50"
-                    : "bg-slate-100/50 border-slate-300 hover:bg-slate-200/50"
-                }`}
+                className={`p-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${isDarkMode
+                  ? "bg-gray-900/50 border-gray-700 hover:bg-gray-800/50"
+                  : "bg-gray-200/50 border-gray-400 hover:bg-gray-300/50"
+                  }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Toggle theme"
@@ -463,7 +427,7 @@ const handleSubmit = (e) => {
                   {isDarkMode ? (
                     <FaSun className="text-yellow-400" size={16} />
                   ) : (
-                    <FaMoon className="text-purple-700" size={16} />
+                    <FaMoon className="text-blue-600" size={16} />
                   )}
                 </motion.div>
               </motion.button>
@@ -474,11 +438,10 @@ const handleSubmit = (e) => {
               {/* Mobile Theme Toggle */}
               <motion.button
                 onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`p-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
-                  isDarkMode
-                    ? "bg-slate-800/50 border-slate-600 hover:bg-slate-700/50"
-                    : "bg-slate-100/50 border-slate-300 hover:bg-slate-200/50"
-                }`}
+                className={`p-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${isDarkMode
+                  ? "bg-gray-900 border-gray-700 hover:bg-gray-800"
+                  : "bg-gray-100 border-gray-300 hover:bg-gray-200"
+                  }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Toggle theme"
@@ -491,7 +454,7 @@ const handleSubmit = (e) => {
                   {isDarkMode ? (
                     <FaSun className="text-yellow-400" size={14} />
                   ) : (
-                    <FaMoon className="text-purple-700" size={14} />
+                    <FaMoon className="text-blue-600" size={14} />
                   )}
                 </motion.div>
               </motion.button>
@@ -499,26 +462,24 @@ const handleSubmit = (e) => {
               {/* Mobile Menu Toggle */}
               <motion.button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={`p-2 rounded-full transition-colors relative ${
-                  isDarkMode ? "hover:bg-slate-800/50" : "hover:bg-slate-100/50"
-                }`}
+                className={`p-2 rounded-full transition-colors relative ${isDarkMode ? "hover:bg-gray-900" : "hover:bg-gray-100"
+                  }`}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Toggle menu"
               >
                 <div
-                  className={`absolute inset-0 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 ${
-                    isDarkMode ? "bg-slate-800/50" : "bg-slate-100/50"
-                  }`}
+                  className={`absolute inset-0 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 ${isDarkMode ? "bg-gray-900" : "bg-gray-100"
+                    }`}
                 ></div>
                 {isMenuOpen ? (
                   <HiX
                     size={24}
-                    className={isDarkMode ? "text-slate-100" : "text-slate-900"}
+                    className={isDarkMode ? "text-white" : "text-black"}
                   />
                 ) : (
                   <HiMenu
                     size={24}
-                    className={isDarkMode ? "text-slate-100" : "text-slate-900"}
+                    className={isDarkMode ? "text-white" : "text-black"}
                   />
                 )}
               </motion.button>
@@ -534,11 +495,10 @@ const handleSubmit = (e) => {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className={`md:hidden backdrop-blur-xl overflow-hidden border-b transition-all duration-300 ${
-                isDarkMode
-                  ? "bg-slate-800/90 border-slate-700/50"
-                  : "bg-slate-100/90 border-slate-200/50"
-              }`}
+              className={`md:hidden backdrop-blur-xl overflow-hidden border-b transition-all duration-300 ${isDarkMode
+                ? "bg-black/95 border-gray-800"
+                : "bg-white/95 border-gray-200"
+                }`}
             >
               <div className="px-6 py-6">
                 <ul className="flex flex-col gap-4">
@@ -554,13 +514,12 @@ const handleSubmit = (e) => {
                     >
                       <a
                         href={`#${section}`}
-                        className={`block py-2 text-lg transition-colors duration-300 ${
-                          activeSection === section
-                            ? "text-purple-500"
-                            : isDarkMode
-                            ? "text-slate-300 hover:text-slate-100"
-                            : "text-slate-700 hover:text-slate-900"
-                        }`}
+                        className={`block py-2 text-lg transition-colors duration-300 ${activeSection === section
+                          ? "text-blue-500"
+                          : isDarkMode
+                            ? "text-gray-300 hover:text-white"
+                            : "text-gray-700 hover:text-black"
+                          }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {section === "home"
@@ -585,7 +544,7 @@ const handleSubmit = (e) => {
         className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 pt-20"
       >
         <div className="max-w-6xl mx-auto relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -593,9 +552,7 @@ const handleSubmit = (e) => {
             >
               <div className="mb-8 inline-block">
                 <span
-                  className={`bg-gradient-to-r from-purple-500 to-purple-600 px-5 py-2 rounded-full text-sm font-medium uppercase tracking-wider shadow-lg ${
-                    isDarkMode ? "text-white" : "text-white"
-                  }`}
+                  className={`bg-blue-600 px-5 py-2 rounded-full text-sm font-medium uppercase tracking-wider shadow-lg text-white`}
                 >
                   <FaRocket className="inline mr-2" size={12} />
                   Digital Creators
@@ -603,17 +560,16 @@ const handleSubmit = (e) => {
               </div>
 
               <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
-                Crafting <span className="text-purple-500">Exceptional</span>{" "}
+                Crafting <span className="text-blue-500">Exceptional</span>{" "}
                 <span className="relative inline-block">
                   Digital Art
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-teal-500 rounded-full"></div>
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-blue-500 rounded-full"></div>
                 </span>
               </h2>
 
               <p
-                className={`text-base sm:text-lg max-w-xl mb-10 leading-relaxed ${
-                  isDarkMode ? "text-slate-300" : "text-slate-600"
-                }`}
+                className={`text-base sm:text-lg max-w-xl mb-10 leading-relaxed ${isDarkMode ? "text-gray-300" : "text-gray-600"
+                  }`}
               >
                 We are a creative studio dedicated to building captivating web
                 experiences, innovative applications, and powerful digital
@@ -630,14 +586,13 @@ const handleSubmit = (e) => {
                   href="#work"
                   whileHover={{
                     scale: 1.03,
-                    boxShadow: `0 0 20px 3px ${
-                      isDarkMode
-                        ? "rgba(147, 51, 234, 0.4)"
-                        : "rgba(147, 51, 234, 0.3)"
-                    }`,
+                    boxShadow: `0 0 20px 3px ${isDarkMode
+                      ? "rgba(37, 99, 235, 0.4)"
+                      : "rgba(37, 99, 235, 0.3)"
+                      }`,
                   }}
                   whileTap={{ scale: 0.97 }}
-                  className="px-8 py-4 bg-gradient-to-r from-purple-500 to-teal-500 text-white rounded-xl font-bold flex items-center justify-center gap-3 relative overflow-hidden group shadow-lg"
+                  className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold flex items-center justify-center gap-3 relative overflow-hidden group shadow-lg"
                 >
                   <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
                   <FaGem className="relative z-10" size={16} />
@@ -651,11 +606,10 @@ const handleSubmit = (e) => {
                   href="#contact"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className={`px-8 py-4 bg-transparent border-2 rounded-xl font-medium flex items-center justify-center gap-3 backdrop-blur-sm transition-colors ${
-                    isDarkMode
-                      ? "border-slate-600 text-slate-100 hover:bg-slate-800/20"
-                      : "border-slate-300 text-slate-900 hover:bg-slate-100/20"
-                  }`}
+                  className={`px-8 py-4 bg-transparent border-2 rounded-xl font-medium flex items-center justify-center gap-3 backdrop-blur-sm transition-colors ${isDarkMode
+                    ? "border-gray-600 text-white hover:bg-gray-900"
+                    : "border-gray-300 text-black hover:bg-gray-100"
+                    }`}
                 >
                   <FaEnvelope size={14} />
                   Get In Touch
@@ -671,34 +625,12 @@ const handleSubmit = (e) => {
             >
               <div className="relative">
                 <div
-                  className={`absolute -inset-4 bg-gradient-to-br rounded-2xl blur-xl opacity-70 ${
-                    isDarkMode
-                      ? "from-purple-500/20 to-teal-500/20"
-                      : "from-purple-400/30 to-teal-400/30"
-                  }`}
-                ></div>
-                <div
-                  className={`w-full h-[400px] rounded-2xl backdrop-blur-md border p-1 relative overflow-hidden shadow-2xl ${
-                    isDarkMode
-                      ? "bg-slate-800/20 border-slate-700/30"
-                      : "bg-slate-100/20 border-slate-200/30"
-                  }`}
+                  className={`w-full h-[400px] rounded-2xl backdrop-blur-md border p-1 relative overflow-hidden shadow-2xl ${isDarkMode
+                    ? "bg-gray-900/50 border-gray-800"
+                    : "bg-gray-50/50 border-gray-200"
+                    }`}
                 >
                   {/* Abstract design elements */}
-                  <div
-                    className={`absolute top-5 left-5 w-20 h-20 rounded-full blur-md ${
-                      isDarkMode
-                        ? "bg-gradient-to-br from-purple-500/30 to-transparent"
-                        : "bg-gradient-to-br from-purple-400/40 to-transparent"
-                    }`}
-                  ></div>
-                  <div
-                    className={`absolute bottom-10 right-10 w-32 h-32 rounded-full blur-xl ${
-                      isDarkMode
-                        ? "bg-gradient-to-tl from-teal-500/30 to-transparent"
-                        : "bg-gradient-to-tl from-teal-400/40 to-transparent"
-                    }`}
-                  ></div>
 
                   <div className="absolute inset-0 overflow-hidden rounded-2xl">
                     {/* Design grid lines */}
@@ -730,43 +662,37 @@ const handleSubmit = (e) => {
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center w-full px-10">
                       <div className="flex items-center gap-4 mb-8">
                         <div
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                            isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
-                          }`}
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${isDarkMode ? "bg-gray-800/50" : "bg-gray-300/50"
+                            }`}
                         >
-                          <FaPalette className="text-purple-500" size={20} />
+                          <FaPalette className="text-blue-500" size={20} />
                         </div>
                         <div
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                            isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
-                          }`}
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${isDarkMode ? "bg-gray-800/50" : "bg-gray-300/50"
+                            }`}
                         >
-                          <FaCode className="text-teal-500" size={20} />
+                          <FaCode className="text-blue-400" size={20} />
                         </div>
                         <div
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                            isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
-                          }`}
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${isDarkMode ? "bg-gray-800/50" : "bg-gray-300/50"
+                            }`}
                         >
                           <FaDesktop
-                            className={`${
-                              isDarkMode ? "text-slate-300" : "text-slate-600"
-                            }`}
+                            className={`${isDarkMode ? "text-gray-400" : "text-gray-700"
+                              }`}
                             size={20}
                           />
                         </div>
                       </div>
 
-                      <div className="h-2 w-32 bg-gradient-to-r from-purple-500 to-teal-500 rounded-full mb-6"></div>
+                      <div className="h-2 w-32 bg-blue-600 rounded-full mb-6"></div>
                       <div
-                        className={`w-3/4 h-10 rounded-lg mb-4 ${
-                          isDarkMode ? "bg-slate-700/50" : "bg-slate-200/50"
-                        }`}
+                        className={`w-3/4 h-10 rounded-lg mb-4 ${isDarkMode ? "bg-gray-800/50" : "bg-gray-300/50"
+                          }`}
                       ></div>
                       <div
-                        className={`w-full h-28 rounded-lg ${
-                          isDarkMode ? "bg-slate-700/30" : "bg-slate-200/30"
-                        }`}
+                        className={`w-full h-28 rounded-lg ${isDarkMode ? "bg-gray-800/30" : "bg-gray-300/30"
+                          }`}
                       ></div>
                     </div>
                   </div>
@@ -779,11 +705,10 @@ const handleSubmit = (e) => {
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
           <a
             href="#services"
-            className={`block p-2 transition-colors ${
-              isDarkMode
-                ? "text-slate-400 hover:text-slate-100"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
+            className={`block p-2 transition-colors ${isDarkMode
+              ? "text-gray-500 hover:text-gray-200"
+              : "text-gray-700 hover:text-black"
+              }`}
             aria-label="Scroll to services"
           >
             <FaArrowDown size={20} />
@@ -794,22 +719,21 @@ const handleSubmit = (e) => {
       {/* Services Section - Glassmorphism */}
       <section
         id="services"
-        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
+        className="min-h-screen flex items-center py-12 sm:py-16 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
           <motion.div
             {...fadeInUp}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Our Expertise</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-blue-600"></span>
             </h3>
             <p
-              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
-                isDarkMode ? "text-slate-300" : "text-slate-600"
-              }`}
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                }`}
             >
               We offer a comprehensive suite of digital services designed to
               elevate your brand and captivate your audience.
@@ -868,18 +792,16 @@ const handleSubmit = (e) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className={`backdrop-blur-lg border rounded-2xl p-6 transition-all duration-300 group relative overflow-hidden hover:shadow-2xl ${
-                  isDarkMode
-                    ? "bg-slate-800/20 border-slate-700/30 hover:border-slate-600/50"
-                    : "bg-slate-100/20 border-slate-200/30 hover:border-slate-300/50"
-                }`}
+                className={`backdrop-blur-lg border rounded-2xl p-6 transition-all duration-300 group relative overflow-hidden hover:shadow-2xl ${isDarkMode
+                  ? "bg-gray-900/20 border-gray-800/30 hover:border-gray-700/50"
+                  : "bg-gray-200/20 border-gray-300/30 hover:border-gray-400/50"
+                  }`}
               >
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                    isDarkMode
-                      ? "from-slate-700/20 to-transparent"
-                      : "from-slate-200/20 to-transparent"
-                  }`}
+                  className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isDarkMode
+                    ? "from-gray-800/20 to-transparent"
+                    : "from-gray-300/20 to-transparent"
+                    }`}
                 ></div>
                 <div
                   className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-gradient-to-br opacity-20 group-hover:opacity-30 transition-opacity duration-300"
@@ -889,13 +811,12 @@ const handleSubmit = (e) => {
                 ></div>
 
                 <div
-                  className={`w-16 h-16 rounded-2xl backdrop-blur-sm border flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-300 ${
-                    isDarkMode
-                      ? "bg-slate-800/50 border-slate-700/50"
-                      : "bg-slate-100/50 border-slate-200/50"
-                  }`}
+                  className={`w-16 h-16 rounded-2xl backdrop-blur-sm border flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-300 ${isDarkMode
+                    ? "bg-gray-900/50 border-gray-800/50"
+                    : "bg-gray-200/50 border-gray-300/50"
+                    }`}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-teal-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-blue-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div
                     style={{ color: service.color }}
                     className="text-2xl relative z-10"
@@ -909,24 +830,22 @@ const handleSubmit = (e) => {
                 </div>
 
                 <h4
-                  className={`font-bold text-xl mb-4 group-hover:text-purple-500 transition-colors duration-300 ${
-                    isDarkMode ? "text-slate-100" : "text-slate-900"
-                  }`}
+                  className={`font-bold text-xl mb-4 group-hover:text-blue-500 transition-colors duration-300 ${isDarkMode ? "text-gray-200" : "text-black"
+                    }`}
                 >
                   {service.title}
                 </h4>
                 <p
-                  className={`group-hover:text-opacity-100 transition-colors duration-300 leading-relaxed ${
-                    isDarkMode
-                      ? "text-slate-400 group-hover:text-slate-200"
-                      : "text-slate-600 group-hover:text-slate-800"
-                  }`}
+                  className={`group-hover:text-opacity-100 transition-colors duration-300 leading-relaxed ${isDarkMode
+                    ? "text-gray-500 group-hover:text-gray-300"
+                    : "text-gray-700 group-hover:text-gray-900"
+                    }`}
                 >
                   {service.description}
                 </p>
 
                 <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500/20 to-teal-500/20 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
                     <FaArrowRight size={12} style={{ color: service.color }} />
                   </div>
                 </div>
@@ -939,22 +858,21 @@ const handleSubmit = (e) => {
       {/* Work Section - Glassmorphism */}
       <section
         id="work"
-        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
+        className="min-h-screen flex items-center py-12 sm:py-16 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
           <motion.div
             {...fadeInUp}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Our Portfolio</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-blue-600"></span>
             </h3>
             <p
-              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
-                isDarkMode ? "text-slate-300" : "text-slate-600"
-              }`}
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                }`}
             >
               Explore a selection of our most recent and impactful projects.
             </p>
@@ -1029,26 +947,23 @@ const handleSubmit = (e) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.15 }}
-                className={`backdrop-blur-lg border rounded-2xl overflow-hidden group relative ${
-                  isDarkMode
-                    ? "bg-slate-800/20 border-slate-700/30"
-                    : "bg-slate-100/20 border-slate-200/30"
-                }`}
+                className={`backdrop-blur-lg border rounded-2xl overflow-hidden group relative ${isDarkMode
+                  ? "bg-gray-900/20 border-gray-800/30"
+                  : "bg-gray-200/20 border-gray-300/30"
+                  }`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 <div
-                  className={`h-64 relative flex items-center justify-center overflow-hidden ${
-                    isDarkMode ? "bg-slate-900/40" : "bg-slate-100/40"
-                  }`}
+                  className={`h-64 relative flex items-center justify-center overflow-hidden ${isDarkMode ? "bg-black/40" : "bg-gray-200/40"
+                    }`}
                 >
                   {/* Project icon in corner */}
                   <div
-                    className={`absolute top-4 left-4 w-12 h-12 backdrop-blur-md border rounded-xl flex items-center justify-center ${
-                      isDarkMode
-                        ? "bg-slate-800/50 border-slate-700/50"
-                        : "bg-slate-100/50 border-slate-200/50"
-                    }`}
+                    className={`absolute top-4 left-4 w-12 h-12 backdrop-blur-md border rounded-xl flex items-center justify-center ${isDarkMode
+                      ? "bg-gray-900/50 border-gray-800/50"
+                      : "bg-gray-200/50 border-gray-300/50"
+                      }`}
                   >
                     <div style={{ color: project.color }} className="text-xl">
                       {project.icon}
@@ -1058,11 +973,10 @@ const handleSubmit = (e) => {
                   {/* Abstract design elements in project preview */}
                   <div className="absolute inset-0">
                     <div
-                      className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${
-                        isDarkMode
-                          ? "from-slate-900/60 to-transparent"
-                          : "from-slate-100/60 to-transparent"
-                      }`}
+                      className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${isDarkMode
+                        ? "from-black/60 to-transparent"
+                        : "from-gray-200/60 to-transparent"
+                        }`}
                     ></div>
                     <div
                       className="absolute bottom-0 right-0 w-56 h-56 rounded-full"
@@ -1103,29 +1017,26 @@ const handleSubmit = (e) => {
                       <span
                         className="bg-clip-text text-transparent bg-gradient-to-r"
                         style={{
-                          backgroundImage: `linear-gradient(to right, ${
-                            project.color
-                          }, ${isDarkMode ? "#FFFFFF" : theme.text})`,
+                          backgroundImage: `linear-gradient(to right, ${project.color
+                            }, ${isDarkMode ? "#FFFFFF" : theme.text})`,
                         }}
                       >
                         {project.title}
                       </span>
                     </h3>
                     <p
-                      className={`text-sm font-medium tracking-wide ${
-                        isDarkMode ? "text-slate-400" : "text-slate-600"
-                      }`}
+                      className={`text-sm font-medium tracking-wide ${isDarkMode ? "text-gray-500" : "text-gray-700"
+                        }`}
                     >
                       {project.type}
                     </p>
                   </div>
 
                   <div
-                    className={`absolute top-4 right-4 px-3 py-1 backdrop-blur-md border rounded-full text-xs flex items-center gap-1 ${
-                      isDarkMode
-                        ? "bg-slate-800/50 border-slate-700/50"
-                        : "bg-slate-100/50 border-slate-200/50"
-                    }`}
+                    className={`absolute top-4 right-4 px-3 py-1 backdrop-blur-md border rounded-full text-xs flex items-center gap-1 ${isDarkMode
+                      ? "bg-gray-900/50 border-gray-800/50"
+                      : "bg-gray-200/50 border-gray-300/50"
+                      }`}
                   >
                     <FaStar className="text-yellow-400" size={10} />
                     Live
@@ -1134,9 +1045,8 @@ const handleSubmit = (e) => {
 
                 <div className="p-6 sm:p-7 relative">
                   <p
-                    className={`mb-5 leading-relaxed ${
-                      isDarkMode ? "text-slate-300" : "text-slate-600"
-                    }`}
+                    className={`mb-5 leading-relaxed ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                      }`}
                   >
                     {project.description}
                   </p>
@@ -1146,11 +1056,10 @@ const handleSubmit = (e) => {
                     {project.technologies.map((tech, index) => (
                       <span
                         key={index}
-                        className={`px-3 py-1.5 border text-xs rounded-full backdrop-blur-sm font-medium transition-all duration-300 ${
-                          isDarkMode
-                            ? "bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50"
-                            : "bg-slate-100/50 border-slate-200/50 hover:border-slate-300/50"
-                        }`}
+                        className={`px-3 py-1.5 border text-xs rounded-full backdrop-blur-sm font-medium transition-all duration-300 ${isDarkMode
+                          ? "bg-gray-900/50 border-gray-800/50 hover:border-gray-700/50"
+                          : "bg-gray-200/50 border-gray-300/50 hover:border-gray-400/50"
+                          }`}
                         style={{ color: project.color }}
                       >
                         {tech}
@@ -1172,9 +1081,8 @@ const handleSubmit = (e) => {
                     </motion.a>
 
                     <div
-                      className={`flex items-center gap-1 text-xs ${
-                        isDarkMode ? "text-slate-400" : "text-slate-600"
-                      }`}
+                      className={`flex items-center gap-1 text-xs ${isDarkMode ? "text-gray-500" : "text-gray-700"
+                        }`}
                     >
                       <FaRegLightbulb className="text-yellow-400" size={10} />{" "}
                       {/* Changed FaStar to FaRegLightbulb for 'Live' indicator */}
@@ -1191,22 +1099,21 @@ const handleSubmit = (e) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mt-16 sm:mt-20 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-8 sm:p-10 relative overflow-hidden"
+            className="text-center mt-10 sm:mt-12 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-8 sm:p-10 relative overflow-hidden"
           >
-            <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gradient-to-br from-teal-500/10 to-transparent blur-3xl"></div>
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl"></div>
+            <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-blue-600/10 blur-3xl"></div>
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-blue-600/10 blur-3xl"></div>
 
             <div className="relative z-10">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-teal-500 mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 mb-6">
                 <FaRegLightbulb className="text-white" size={24} />
               </div>
               <h4 className="font-bold text-2xl sm:text-3xl mb-4">
                 Ready to Bring Your Idea to Life?
               </h4>
               <p
-                className={`max-w-2xl mx-auto mb-8 text-lg ${
-                  isDarkMode ? "text-slate-300" : "text-slate-600"
-                }`}
+                className={`max-w-2xl mx-auto mb-8 text-lg ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                  }`}
               >
                 We're passionate about crafting exceptional digital experiences.
                 Let's collaborate to transform your vision into a stunning
@@ -1217,14 +1124,13 @@ const handleSubmit = (e) => {
                   href="#contact"
                   whileHover={{
                     scale: 1.03,
-                    boxShadow: `0 0 20px 3px ${
-                      isDarkMode
-                        ? "rgba(147, 51, 234, 0.4)"
-                        : "rgba(147, 51, 234, 0.3)"
-                    }`,
+                    boxShadow: `0 0 20px 3px ${isDarkMode
+                      ? "rgba(147, 51, 234, 0.4)"
+                      : "rgba(147, 51, 234, 0.3)"
+                      }`,
                   }}
                   whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-teal-500 text-white rounded-xl font-bold relative overflow-hidden group shadow-lg"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-xl font-bold relative overflow-hidden group shadow-lg"
                 >
                   <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
                   <FaRocket className="mr-3 relative z-10" size={16} />
@@ -1237,11 +1143,10 @@ const handleSubmit = (e) => {
                   href="#services"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`inline-flex items-center justify-center px-8 py-4 border-2 rounded-xl font-medium backdrop-blur-sm transition-colors ${
-                    isDarkMode
-                      ? "border-slate-600 text-slate-100 hover:bg-slate-800/20"
-                      : "border-slate-300 text-slate-900 hover:bg-slate-100/20"
-                  }`}
+                  className={`inline-flex items-center justify-center px-8 py-4 border-2 rounded-xl font-medium backdrop-blur-sm transition-colors ${isDarkMode
+                    ? "border-gray-700 text-gray-200 hover:bg-gray-900/20"
+                    : "border-gray-400 text-black hover:bg-gray-200/20"
+                    }`}
                 >
                   <FaRegLightbulb className="mr-3" size={16} />
                   Our Services
@@ -1255,22 +1160,21 @@ const handleSubmit = (e) => {
       {/* Pricing Section - Glassmorphism */}
       <section
         id="pricing"
-        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
+        className="min-h-screen flex items-center py-12 sm:py-16 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
           <motion.div
             {...fadeInUp}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Flexible Pricing</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-blue-600"></span>
             </h3>
             <p
-              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
-                isDarkMode ? "text-slate-300" : "text-slate-600"
-              }`}
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                }`}
             >
               Find the perfect plan for your digital needs, from startups to
               enterprises.
@@ -1286,39 +1190,35 @@ const handleSubmit = (e) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className={`backdrop-blur-lg border rounded-2xl p-6 relative overflow-hidden group flex flex-col justify-between ${
-                  isDarkMode
-                    ? "bg-slate-800/20 border-slate-700/30"
-                    : "bg-slate-100/20 border-slate-200/30"
-                } ${
-                  tier.isHighlighted
+                className={`backdrop-blur-lg border rounded-2xl p-6 relative overflow-hidden group flex flex-col justify-between ${isDarkMode
+                  ? "bg-gray-900/20 border-gray-800/30"
+                  : "bg-gray-200/20 border-gray-300/30"
+                  } ${tier.isHighlighted
                     ? isDarkMode
-                      ? "border-purple-500/50 shadow-lg shadow-purple-500/20"
-                      : "border-purple-500/50 shadow-lg shadow-purple-400/20"
+                      ? "border-blue-500/50 shadow-lg shadow-blue-500/20"
+                      : "border-blue-500/50 shadow-lg shadow-blue-400/20"
                     : ""
-                }`}
+                  }`}
               >
                 {tier.isHighlighted && (
-                  <div className="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-gradient-to-r from-purple-500 to-teal-500 text-white text-xs font-bold rounded-full uppercase tracking-wider shadow-md">
+                  <div className="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-blue-600 text-white text-xs font-bold rounded-full uppercase tracking-wider shadow-md">
                     Popular
                   </div>
                 )}
 
                 <div
-                  className={`absolute -top-10 -right-10 w-24 h-24 rounded-full blur-xl opacity-60 ${
-                    isDarkMode
-                      ? "bg-gradient-to-br from-purple-500/10 to-transparent"
-                      : "bg-gradient-to-br from-purple-400/20 to-transparent"
-                  }`}
+                  className={`absolute -top-10 -right-10 w-24 h-24 rounded-full blur-xl opacity-60 ${isDarkMode
+                    ? "bg-blue-600/10"
+                    : "bg-blue-600/10"
+                    }`}
                 ></div>
 
                 <div className="text-center mb-6 pt-4">
                   <div
-                    className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center backdrop-blur-sm border ${
-                      isDarkMode
-                        ? "bg-slate-800/50 border-slate-700/50"
-                        : "bg-slate-100/50 border-slate-200/50"
-                    }`}
+                    className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center backdrop-blur-sm border ${isDarkMode
+                      ? "bg-gray-900/50 border-gray-800/50"
+                      : "bg-gray-200/50 border-gray-300/50"
+                      }`}
                   >
                     <tier.icon
                       size={24}
@@ -1327,26 +1227,24 @@ const handleSubmit = (e) => {
                     />
                   </div>
                   <h4
-                    className={`font-bold text-2xl mb-2 ${
-                      isDarkMode ? "text-slate-100" : "text-slate-900"
-                    }`}
+                    className={`font-bold text-2xl mb-2 ${isDarkMode ? "text-gray-200" : "text-black"
+                      }`}
                   >
                     {tier.name}
                   </h4>
                   {tier.price !== "Contact Us" ? (
-                    <p className="text-4xl font-extrabold text-purple-500">
+                    <p className="text-4xl font-extrabold text-blue-500">
                       ₹{tier.price}
                       <br />
                       <span
-                        className={`text-base font-medium ${
-                          isDarkMode ? "text-slate-400" : "text-slate-600"
-                        }`}
+                        className={`text-base font-medium ${isDarkMode ? "text-gray-500" : "text-gray-700"
+                          }`}
                       >
                         {tier.unit}
                       </span>
                     </p>
                   ) : (
-                    <p className="text-3xl font-extrabold text-teal-500">
+                    <p className="text-3xl font-extrabold text-blue-400">
                       {tier.price}
                     </p>
                   )}
@@ -1356,11 +1254,10 @@ const handleSubmit = (e) => {
                   {tier.features.map((feature, i) => (
                     <li
                       key={i}
-                      className={`flex items-center gap-3 ${
-                        isDarkMode ? "text-slate-300" : "text-slate-700"
-                      }`}
+                      className={`flex items-center gap-3 ${isDarkMode ? "text-gray-400" : "text-gray-800"
+                        }`}
                     >
-                      <FaArrowRight size={14} className="text-teal-500" />
+                      <FaArrowRight size={14} className="text-blue-400" />
                       {feature}
                     </li>
                   ))}
@@ -1370,29 +1267,26 @@ const handleSubmit = (e) => {
                   href="#contact"
                   whileHover={{
                     scale: 1.02,
-                    boxShadow: `0 0 15px 2px ${
-                      tier.isHighlighted
-                        ? isDarkMode
-                          ? "rgba(147, 51, 234, 0.4)"
-                          : "rgba(147, 51, 234, 0.3)"
-                        : isDarkMode
+                    boxShadow: `0 0 15px 2px ${tier.isHighlighted
+                      ? isDarkMode
+                        ? "rgba(147, 51, 234, 0.4)"
+                        : "rgba(147, 51, 234, 0.3)"
+                      : isDarkMode
                         ? "rgba(20, 184, 166, 0.3)"
                         : "rgba(13, 148, 136, 0.2)"
-                    }`,
+                      }`,
                   }}
                   whileTap={{ scale: 0.98 }}
-                  className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 relative overflow-hidden group text-sm ${
-                    tier.isHighlighted
-                      ? "bg-gradient-to-r from-purple-500 to-teal-500 text-white"
-                      : isDarkMode
-                      ? "bg-slate-700/50 text-slate-100 border border-slate-600 hover:bg-slate-600/50"
-                      : "bg-slate-200/50 text-slate-900 border border-slate-300 hover:bg-slate-300/50"
-                  }`}
+                  className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 relative overflow-hidden group text-sm ${tier.isHighlighted
+                    ? "bg-blue-600 text-white"
+                    : isDarkMode
+                      ? "bg-gray-800/50 text-gray-200 border border-gray-700 hover:bg-gray-700/50"
+                      : "bg-gray-300/50 text-black border border-gray-400 hover:bg-gray-400/50"
+                    }`}
                 >
                   <span
-                    className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${
-                      tier.isHighlighted ? "bg-white" : ""
-                    }`}
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${tier.isHighlighted ? "bg-white" : ""
+                      }`}
                   ></span>
                   <span className="relative z-10">{tier.buttonText}</span>
                   {tier.price !== "Contact Us" && (
@@ -1408,22 +1302,21 @@ const handleSubmit = (e) => {
       {/* Testimonials Section - Glassmorphism */}
       <section
         id="testimonials"
-        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
+        className="min-h-screen flex items-center py-12 sm:py-16 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
           <motion.div
             {...fadeInUp}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Client Feedback</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-blue-600"></span>
             </h3>
             <p
-              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
-                isDarkMode ? "text-slate-300" : "text-slate-600"
-              }`}
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                }`}
             >
               Here's what our clients have to say about working with us.
             </p>
@@ -1437,36 +1330,32 @@ const handleSubmit = (e) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className={`backdrop-blur-lg border rounded-2xl p-6 relative overflow-hidden group h-full flex flex-col ${
-                  isDarkMode
-                    ? "bg-slate-800/20 border-slate-700/30"
-                    : "bg-slate-100/20 border-slate-200/30"
-                }`}
+                className={`backdrop-blur-lg border rounded-2xl p-6 relative overflow-hidden group h-full flex flex-col ${isDarkMode
+                  ? "bg-gray-900/20 border-gray-800/30"
+                  : "bg-gray-200/20 border-gray-300/30"
+                  }`}
               >
                 {/* Decorative elements */}
                 <div
-                  className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl opacity-60 ${
-                    isDarkMode
-                      ? "bg-gradient-to-br from-purple-500/10 to-transparent"
-                      : "bg-gradient-to-br from-purple-400/20 to-transparent"
-                  }`}
+                  className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl opacity-60 ${isDarkMode
+                    ? "bg-blue-600/10"
+                    : "bg-blue-600/10"
+                    }`}
                 ></div>
                 <div
-                  className={`absolute -bottom-10 -left-10 w-24 h-24 rounded-full blur-xl opacity-60 ${
-                    isDarkMode
-                      ? "bg-gradient-to-tr from-teal-500/10 to-transparent"
-                      : "bg-gradient-to-tr from-teal-400/20 to-transparent"
-                  }`}
+                  className={`absolute -bottom-10 -left-10 w-24 h-24 rounded-full blur-xl opacity-60 ${isDarkMode
+                    ? "bg-blue-600/10"
+                    : "bg-blue-600/10"
+                    }`}
                 ></div>
 
                 {/* Quote icon */}
-                <div className="text-4xl text-purple-500/20 mb-4">"</div>
+                <div className="text-4xl text-blue-500/20 mb-4">"</div>
 
                 {/* Testimonial content */}
                 <p
-                  className={`mb-6 relative z-10 flex-grow ${
-                    isDarkMode ? "text-slate-200" : "text-slate-700"
-                  }`}
+                  className={`mb-6 relative z-10 flex-grow ${isDarkMode ? "text-gray-300" : "text-gray-800"
+                    }`}
                 >
                   {testimonial.text}
                 </p>
@@ -1474,11 +1363,10 @@ const handleSubmit = (e) => {
                 {/* Client info */}
                 <div className="flex items-center gap-4 relative z-10 mt-auto">
                   <div
-                    className={`w-12 h-12 rounded-full overflow-hidden backdrop-blur-sm border flex items-center justify-center ${
-                      isDarkMode
-                        ? "bg-slate-800/50 border-slate-700/50"
-                        : "bg-slate-100/50 border-slate-200/50"
-                    }`}
+                    className={`w-12 h-12 rounded-full overflow-hidden backdrop-blur-sm border flex items-center justify-center ${isDarkMode
+                      ? "bg-gray-900/50 border-gray-800/50"
+                      : "bg-gray-200/50 border-gray-300/50"
+                      }`}
                   >
                     {testimonial.avatar ? (
                       <img
@@ -1499,16 +1387,14 @@ const handleSubmit = (e) => {
                   </div>
                   <div>
                     <h4
-                      className={`font-medium group-hover:text-purple-500 transition-colors duration-300 ${
-                        isDarkMode ? "text-slate-100" : "text-slate-900"
-                      }`}
+                      className={`font-medium group-hover:text-blue-500 transition-colors duration-300 ${isDarkMode ? "text-gray-200" : "text-black"
+                        }`}
                     >
                       {testimonial.name}
                     </h4>
                     <p
-                      className={`text-sm ${
-                        isDarkMode ? "text-slate-400" : "text-slate-600"
-                      }`}
+                      className={`text-sm ${isDarkMode ? "text-gray-500" : "text-gray-700"
+                        }`}
                     >
                       {testimonial.position}, {testimonial.company}
                     </p>
@@ -1525,8 +1411,8 @@ const handleSubmit = (e) => {
                           i < testimonial.rating
                             ? "text-yellow-400"
                             : isDarkMode
-                            ? "text-slate-600"
-                            : "text-slate-300"
+                              ? "text-gray-700"
+                              : "text-gray-400"
                         }
                       >
                         ★
@@ -1544,30 +1430,27 @@ const handleSubmit = (e) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-center mt-12 sm:mt-16 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
+            className="text-center mt-12 sm:mt-10 backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
           >
             <div
-              className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl ${
-                isDarkMode
-                  ? "bg-gradient-to-br from-purple-500/10 to-transparent"
-                  : "bg-gradient-to-br from-purple-400/20 to-transparent"
-              }`}
+              className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl ${isDarkMode
+                ? "bg-blue-600/10"
+                : "bg-blue-600/10"
+                }`}
             ></div>
             <div
-              className={`absolute -bottom-24 -left-24 w-64 h-64 rounded-full blur-3xl ${
-                isDarkMode
-                  ? "bg-gradient-to-br from-teal-500/10 to-transparent"
-                  : "bg-gradient-to-br from-teal-400/20 to-transparent"
-              }`}
+              className={`absolute -bottom-24 -left-24 w-64 h-64 rounded-full blur-3xl ${isDarkMode
+                ? "bg-blue-600/10"
+                : "bg-blue-600/10"
+                }`}
             ></div>
 
             <h4 className="font-bold text-xl sm:text-2xl mb-3">
               Ready to collaborate on your next big idea?
             </h4>
             <p
-              className={`max-w-xl mx-auto mb-6 ${
-                isDarkMode ? "text-slate-300" : "text-slate-600"
-              }`}
+              className={`max-w-xl mx-auto mb-6 ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                }`}
             >
               Let's connect and discuss how we can bring your digital vision to
               life with our expertise and creativity.
@@ -1576,14 +1459,13 @@ const handleSubmit = (e) => {
               href="#contact"
               whileHover={{
                 scale: 1.03,
-                boxShadow: `0 0 15px 2px ${
-                  isDarkMode
-                    ? "rgba(147, 51, 234, 0.3)"
-                    : "rgba(147, 51, 234, 0.2)"
-                }`,
+                boxShadow: `0 0 15px 2px ${isDarkMode
+                  ? "rgba(147, 51, 234, 0.3)"
+                  : "rgba(147, 51, 234, 0.2)"
+                  }`,
               }}
               whileTap={{ scale: 0.98 }}
-              className="inline-block px-7 py-3.5 bg-gradient-to-r from-purple-500 to-teal-500 text-white rounded-xl font-medium relative overflow-hidden group"
+              className="inline-block px-7 py-3.5 bg-blue-600 text-white rounded-xl font-medium relative overflow-hidden group"
             >
               <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
               <span className="relative z-10">Get a Free Consultation</span>
@@ -1595,22 +1477,21 @@ const handleSubmit = (e) => {
       {/* Contact - Glassmorphism */}
       <section
         id="contact"
-        className="min-h-screen flex items-center py-20 sm:py-28 px-4 sm:px-6 relative"
+        className="min-h-screen flex items-center py-12 sm:py-16 px-4 sm:px-6 relative"
       >
         <div className="max-w-6xl mx-auto w-full">
           <motion.div
             {...fadeInUp}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
             <h3 className="text-3xl sm:text-4xl font-bold mb-4 relative inline-block">
               <span className="relative z-10">Let's Connect</span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
+              <span className="absolute -bottom-2 left-0 right-0 h-[6px] bg-blue-600"></span>
             </h3>
             <p
-              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${
-                isDarkMode ? "text-slate-300" : "text-slate-600"
-              }`}
+              className={`max-w-xl mx-auto mt-6 text-base sm:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                }`}
             >
               Have an exciting project in mind or just want to chat? Reach out
               to us, and let's make something amazing together.
@@ -1626,47 +1507,42 @@ const handleSubmit = (e) => {
               className="lg:col-span-1"
             >
               <div
-                className={`backdrop-blur-lg border rounded-2xl p-6 sm:p-7 h-full relative overflow-hidden ${
-                  isDarkMode
-                    ? "bg-slate-800/20 border-slate-700/30"
-                    : "bg-slate-100/20 border-slate-200/30"
-                }`}
+                className={`backdrop-blur-lg border rounded-2xl p-6 sm:p-7 h-full relative overflow-hidden ${isDarkMode
+                  ? "bg-gray-900/20 border-gray-800/30"
+                  : "bg-gray-200/20 border-gray-300/30"
+                  }`}
               >
                 <div
-                  className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl ${
-                    isDarkMode ? "bg-teal-500/10" : "bg-teal-400/10"
-                  }`}
+                  className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl ${isDarkMode ? "bg-blue-400/10" : "bg-blue-300/10"
+                    }`}
                 ></div>
 
                 <h4 className="font-bold text-xl sm:text-2xl mb-6 flex items-center gap-3">
-                  <span className="w-8 h-1 bg-teal-500"></span>
+                  <span className="w-8 h-1 bg-blue-400"></span>
                   <span>Contact Details</span>
                 </h4>
 
                 <div className="space-y-8 relative z-10">
                   <div className="flex items-start gap-4">
                     <div
-                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${
-                        isDarkMode
-                          ? "bg-slate-800/50 border-slate-700/50"
-                          : "bg-slate-100/50 border-slate-200/50"
-                      }`}
+                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${isDarkMode
+                        ? "bg-gray-900/50 border-gray-800/50"
+                        : "bg-gray-200/50 border-gray-300/50"
+                        }`}
                     >
-                      <FaEnvelope className="text-teal-500" size={16} />
+                      <FaEnvelope className="text-blue-400" size={16} />
                     </div>
                     <div>
                       <p
-                        className={`text-sm mb-1 ${
-                          isDarkMode ? "text-white/70" : "text-slate-600"
-                        }`}
+                        className={`text-sm mb-1 ${isDarkMode ? "text-white/70" : "text-gray-700"
+                          }`}
                       >
                         Email us at
                       </p>
                       <a
                         href="mailto:doodlebyte.studio@gmail.com"
-                        className={`font-medium text-sm hover:text-teal-500 transition-colors ${
-                          isDarkMode ? "text-white" : "text-slate-900"
-                        }`}
+                        className={`font-medium text-sm hover:text-blue-400 transition-colors ${isDarkMode ? "text-white" : "text-black"
+                          }`}
                       >
                         doodlebyte.studio@gmail.com
                       </a>
@@ -1675,27 +1551,24 @@ const handleSubmit = (e) => {
 
                   <div className="flex items-start gap-4">
                     <div
-                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${
-                        isDarkMode
-                          ? "bg-slate-800/50 border-slate-700/50"
-                          : "bg-slate-100/50 border-slate-200/50"
-                      }`}
+                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${isDarkMode
+                        ? "bg-gray-900/50 border-gray-800/50"
+                        : "bg-gray-200/50 border-gray-300/50"
+                        }`}
                     >
-                      <FaPhone className="text-purple-500" size={16} />
+                      <FaPhone className="text-blue-500" size={16} />
                     </div>
                     <div>
                       <p
-                        className={`text-sm mb-1 ${
-                          isDarkMode ? "text-white/70" : "text-slate-600"
-                        }`}
+                        className={`text-sm mb-1 ${isDarkMode ? "text-white/70" : "text-gray-700"
+                          }`}
                       >
                         Call us
                       </p>
                       <a
                         href="tel:+917358004687"
-                        className={`font-medium text-sm hover:text-purple-500 transition-colors ${
-                          isDarkMode ? "text-white" : "text-slate-900"
-                        }`}
+                        className={`font-medium text-sm hover:text-blue-500 transition-colors ${isDarkMode ? "text-white" : "text-black"
+                          }`}
                       >
                         +91 7358004687
                       </a>
@@ -1704,19 +1577,17 @@ const handleSubmit = (e) => {
 
                   <div className="flex items-start gap-4">
                     <div
-                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${
-                        isDarkMode
-                          ? "bg-slate-800/50 border-slate-700/50"
-                          : "bg-slate-100/50 border-slate-200/50"
-                      }`}
+                      className={`w-12 h-12 rounded-xl backdrop-blur-sm border flex items-center justify-center flex-shrink-0 mt-1 ${isDarkMode
+                        ? "bg-gray-900/50 border-gray-800/50"
+                        : "bg-gray-200/50 border-gray-300/50"
+                        }`}
                     >
                       <FaWhatsapp className="text-green-500" size={16} />
                     </div>
                     <div>
                       <p
-                        className={`text-sm mb-1 ${
-                          isDarkMode ? "text-white/70" : "text-slate-600"
-                        }`}
+                        className={`text-sm mb-1 ${isDarkMode ? "text-white/70" : "text-gray-700"
+                          }`}
                       >
                         WhatsApp Us
                       </p>
@@ -1724,9 +1595,8 @@ const handleSubmit = (e) => {
                         href="https://wa.me/+916384260325"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`font-medium text-sm hover:text-green-500 transition-colors ${
-                          isDarkMode ? "text-white" : "text-slate-900"
-                        }`}
+                        className={`font-medium text-sm hover:text-green-500 transition-colors ${isDarkMode ? "text-white" : "text-black"
+                          }`}
                       >
                         +91 6384260325
                       </a>
@@ -1745,25 +1615,22 @@ const handleSubmit = (e) => {
             >
               <form
                 onSubmit={handleSubmit}
-                className={`backdrop-blur-lg border p-6 sm:p-7 rounded-2xl space-y-6 relative overflow-hidden ${
-                  isDarkMode
-                    ? "bg-slate-800/20 border-slate-700/30"
-                    : "bg-slate-100/20 border-slate-200/30"
-                }`}
+                className={`backdrop-blur-lg border p-6 sm:p-7 rounded-2xl space-y-6 relative overflow-hidden ${isDarkMode
+                  ? "bg-gray-900/20 border-gray-800/30"
+                  : "bg-gray-200/20 border-gray-300/30"
+                  }`}
               >
                 <div
-                  className={`absolute -bottom-20 -right-20 w-64 h-64 rounded-full blur-3xl ${
-                    isDarkMode ? "bg-purple-500/5" : "bg-purple-400/5"
-                  }`}
+                  className={`absolute -bottom-20 -right-20 w-64 h-64 rounded-full blur-3xl ${isDarkMode ? "bg-blue-500/5" : "bg-blue-400/5"
+                    }`}
                 ></div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="relative z-10">
                     <label
                       htmlFor="name"
-                      className={`block text-sm font-medium mb-2 ${
-                        isDarkMode ? "text-white/80" : "text-slate-700"
-                      }`}
+                      className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-white/80" : "text-gray-800"
+                        }`}
                     >
                       Your Name
                     </label>
@@ -1771,11 +1638,10 @@ const handleSubmit = (e) => {
                       id="name"
                       type="text"
                       placeholder="John Doe"
-                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
-                        isDarkMode
-                          ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
-                          : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
-                      }`}
+                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${isDarkMode
+                        ? "bg-gray-900/50 border-gray-800/50 focus:border-blue-400 text-white"
+                        : "bg-gray-200/50 border-gray-300/50 focus:border-blue-500 text-black"
+                        }`}
                       value={contact.name}
                       onChange={(e) =>
                         setContact({ ...contact, name: e.target.value })
@@ -1787,9 +1653,8 @@ const handleSubmit = (e) => {
                   <div className="relative z-10">
                     <label
                       htmlFor="email"
-                      className={`block text-sm font-medium mb-2 ${
-                        isDarkMode ? "text-white/80" : "text-slate-700"
-                      }`}
+                      className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-white/80" : "text-gray-800"
+                        }`}
                     >
                       Email Address
                     </label>
@@ -1797,11 +1662,10 @@ const handleSubmit = (e) => {
                       id="email"
                       type="email"
                       placeholder="your@email.com"
-                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
-                        isDarkMode
-                          ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
-                          : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
-                      }`}
+                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${isDarkMode
+                        ? "bg-gray-900/50 border-gray-800/50 focus:border-blue-400 text-white"
+                        : "bg-gray-200/50 border-gray-300/50 focus:border-blue-500 text-black"
+                        }`}
                       value={contact.email}
                       onChange={(e) =>
                         setContact({ ...contact, email: e.target.value })
@@ -1814,19 +1678,17 @@ const handleSubmit = (e) => {
                   <div className="relative z-10">
                     <label
                       htmlFor="plan"
-                      className={`block text-sm font-medium mb-2 ${
-                        isDarkMode ? "text-white/80" : "text-slate-700"
-                      }`}
+                      className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-white/80" : "text-gray-800"
+                        }`}
                     >
                       Your Plan
                     </label>
                     <select
                       id="plan"
-                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
-                        isDarkMode
-                          ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
-                          : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
-                      }`}
+                      className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${isDarkMode
+                        ? "bg-gray-900/50 border-gray-800/50 focus:border-blue-400 text-white"
+                        : "bg-gray-200/50 border-gray-300/50 focus:border-blue-500 text-black"
+                        }`}
                       value={contact.plan}
                       onChange={(e) =>
                         setContact({ ...contact, plan: e.target.value })
@@ -1848,20 +1710,18 @@ const handleSubmit = (e) => {
                 <div className="relative z-10">
                   <label
                     htmlFor="message"
-                    className={`block text-sm font-medium mb-2 ${
-                      isDarkMode ? "text-white/80" : "text-slate-700"
-                    }`}
+                    className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-white/80" : "text-gray-800"
+                      }`}
                   >
                     Your Message
                   </label>
                   <textarea
                     id="message"
                     placeholder="Tell us about your project..."
-                    className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${
-                      isDarkMode
-                        ? "bg-slate-800/50 border-slate-700/50 focus:border-teal-500 text-white"
-                        : "bg-slate-100/50 border-slate-200/50 focus:border-purple-500 text-slate-900"
-                    }`}
+                    className={`w-full p-3 rounded-xl border focus:outline-none backdrop-blur-sm ${isDarkMode
+                      ? "bg-gray-900/50 border-gray-800/50 focus:border-blue-400 text-white"
+                      : "bg-gray-200/50 border-gray-300/50 focus:border-blue-500 text-black"
+                      }`}
                     rows="5"
                     value={contact.message}
                     onChange={(e) =>
@@ -1875,14 +1735,13 @@ const handleSubmit = (e) => {
                   type="submit"
                   whileHover={{
                     scale: 1.02,
-                    boxShadow: `0 0 15px 2px ${
-                      isDarkMode
-                        ? "rgba(147, 51, 234, 0.3)"
-                        : "rgba(147, 51, 234, 0.2)"
-                    }`,
+                    boxShadow: `0 0 15px 2px ${isDarkMode
+                      ? "rgba(147, 51, 234, 0.3)"
+                      : "rgba(147, 51, 234, 0.2)"
+                      }`,
                   }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-3.5 rounded-xl font-medium bg-gradient-to-r from-purple-500 to-teal-500 text-white text-sm flex items-center justify-center gap-2 relative overflow-hidden group"
+                  className="w-full py-3.5 rounded-xl font-medium bg-blue-600 text-white text-sm flex items-center justify-center gap-2 relative overflow-hidden group"
                 >
                   <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
                   <span className="relative z-10 font-medium">
@@ -1898,26 +1757,22 @@ const handleSubmit = (e) => {
 
       {/* Footer - Glassmorphism */}
       <footer
-        className={`border-t py-10 sm:py-12 px-4 sm:px-6 backdrop-blur-xl relative overflow-hidden ${
-          isDarkMode
-            ? "border-slate-700/30 bg-slate-900/60"
-            : "border-slate-200/30 bg-slate-50/60"
-        }`}
+        className={`border-t py-10 sm:py-12 px-4 sm:px-6 backdrop-blur-xl relative overflow-hidden ${isDarkMode
+          ? "border-gray-800/30 bg-black/60"
+          : "border-gray-300/30 bg-gray-100/60"
+          }`}
       >
         <div
-          className={`absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none ${
-            isDarkMode ? 'bg-[url("/noise.png")]' : 'bg-[url("/noise.png")]'
-          }`}
+          className={`absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none ${isDarkMode ? 'bg-[url("/noise.png")]' : 'bg-[url("/noise.png")]'
+            }`}
         ></div>
         <div
-          className={`absolute -top-80 left-1/3 w-64 h-64 rounded-full blur-3xl ${
-            isDarkMode ? "bg-teal-500/5" : "bg-teal-400/5"
-          }`}
+          className={`absolute -top-80 left-1/3 w-64 h-64 rounded-full blur-3xl ${isDarkMode ? "bg-blue-400/5" : "bg-blue-300/5"
+            }`}
         ></div>
         <div
-          className={`absolute -bottom-20 right-1/4 w-64 h-64 rounded-full blur-3xl ${
-            isDarkMode ? "bg-purple-500/5" : "bg-purple-400/5"
-          }`}
+          className={`absolute -bottom-20 right-1/4 w-64 h-64 rounded-full blur-3xl ${isDarkMode ? "bg-blue-500/5" : "bg-blue-400/5"
+            }`}
         ></div>
 
         <div className="max-w-6xl mx-auto">
@@ -1929,22 +1784,20 @@ const handleSubmit = (e) => {
               >
                 <div>
                   <h1 className="text-2xl font-bold leading-tight">
-                    <span className="text-purple-500">Doodle</span>
-                    <span className="text-teal-500">Byte</span>
+                    <span className="text-blue-500">Doodle</span>
+                    <span className="text-blue-400">Byte</span>
                   </h1>
                   <p
-                    className={`text-xs font-medium tracking-wide ${
-                      isDarkMode ? "text-slate-400" : "text-slate-600"
-                    }`}
+                    className={`text-xs font-medium tracking-wide ${isDarkMode ? "text-gray-500" : "text-gray-700"
+                      }`}
                   >
                     Design Studio
                   </p>
                 </div>
               </a>
               <p
-                className={`mb-4 ${
-                  isDarkMode ? "text-slate-400" : "text-slate-600"
-                }`}
+                className={`mb-4 ${isDarkMode ? "text-gray-500" : "text-gray-700"
+                  }`}
               >
                 A creative design and development studio focused on crafting
                 exceptional digital experiences.
@@ -1958,11 +1811,10 @@ const handleSubmit = (e) => {
                   <li key={section}>
                     <a
                       href={`#${section}`}
-                      className={`${
-                        isDarkMode
-                          ? "text-slate-400 hover:text-purple-400"
-                          : "text-slate-600 hover:text-purple-700"
-                      } transition-colors`}
+                      className={`${isDarkMode
+                        ? "text-gray-500 hover:text-blue-400"
+                        : "text-gray-700 hover:text-blue-700"
+                        } transition-colors`}
                     >
                       {section === "home"
                         ? "Home"
@@ -1977,11 +1829,10 @@ const handleSubmit = (e) => {
               <h4 className="text-lg font-medium mb-4">Connect With Us</h4>
               <a
                 href="mailto:doodlebyte.studio@gmail.com"
-                className={`${
-                  isDarkMode
-                    ? "text-slate-400 hover:text-teal-400"
-                    : "text-slate-600 hover:text-teal-700"
-                } transition-colors mb-2 inline-block`}
+                className={`${isDarkMode
+                  ? "text-gray-500 hover:text-blue-300"
+                  : "text-gray-700 hover:text-blue-600"
+                  } transition-colors mb-2 inline-block`}
               >
                 doodlebyte.studio@gmail.com
               </a>
@@ -2009,11 +1860,10 @@ const handleSubmit = (e) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ y: -2 }}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                      isDarkMode
-                        ? "bg-slate-800/50 hover:bg-slate-700/50 text-slate-400"
-                        : "bg-slate-100/50 hover:bg-slate-200/50 text-slate-600"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isDarkMode
+                      ? "bg-gray-900/50 hover:bg-gray-800/50 text-gray-500"
+                      : "bg-gray-200/50 hover:bg-gray-300/50 text-gray-700"
+                      }`}
                     aria-label={item.label}
                   >
                     <item.icon size={14} />
@@ -2024,35 +1874,31 @@ const handleSubmit = (e) => {
           </div>
 
           <div
-            className={`border-t pt-6 flex flex-col md:flex-row justify-between items-center gap-4 ${
-              isDarkMode ? "border-slate-700/30" : "border-slate-200/30"
-            }`}
+            className={`border-t pt-6 flex flex-col md:flex-row justify-between items-center gap-4 ${isDarkMode ? "border-gray-800/30" : "border-gray-300/30"
+              }`}
           >
             <p
-              className={`text-sm text-center md:text-left ${
-                isDarkMode ? "text-slate-500" : "text-slate-500"
-              }`}
+              className={`text-sm text-center md:text-left ${isDarkMode ? "text-gray-600" : "text-gray-600"
+                }`}
             >
               &copy; {new Date().getFullYear()} DoodleByte. All rights reserved.
             </p>
             <div className="flex gap-6">
               <a
                 href="#"
-                className={`${
-                  isDarkMode
-                    ? "text-slate-500 hover:text-slate-300"
-                    : "text-slate-500 hover:text-slate-700"
-                } text-sm transition-colors`}
+                className={`${isDarkMode
+                  ? "text-gray-600 hover:text-gray-400"
+                  : "text-gray-600 hover:text-gray-800"
+                  } text-sm transition-colors`}
               >
                 Privacy Policy
               </a>
               <a
                 href="#"
-                className={`${
-                  isDarkMode
-                    ? "text-slate-500 hover:text-slate-300"
-                    : "text-slate-500 hover:text-slate-700"
-                } text-sm transition-colors`}
+                className={`${isDarkMode
+                  ? "text-gray-600 hover:text-gray-400"
+                  : "text-gray-600 hover:text-gray-800"
+                  } text-sm transition-colors`}
               >
                 Terms of Service
               </a>
